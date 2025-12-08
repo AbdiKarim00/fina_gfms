@@ -1,0 +1,53 @@
+═══════════════════════════════════════════════════════════════
+  QUICK SMS TEST - GFMS Authentication
+═══════════════════════════════════════════════════════════════
+
+STEP 1: Reseed Database
+────────────────────────────────────────────────────────────────
+docker exec gfms_app php artisan migrate:fresh --seed
+
+STEP 2: Test SMS Login (Your Phone: +254113334370)
+────────────────────────────────────────────────────────────────
+curl -X POST http://localhost:8000/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"personal_number":"999999","password":"password","otp_channel":"sms"}'
+
+STEP 3: Check Your Phone for OTP
+────────────────────────────────────────────────────────────────
+You should receive SMS with 6-digit code
+
+STEP 4: Verify OTP (Replace 123456 with actual OTP)
+────────────────────────────────────────────────────────────────
+curl -X POST http://localhost:8000/api/v1/auth/verify-otp \
+  -H "Content-Type: application/json" \
+  -d '{"user_id":6,"code":"123456","otp_channel":"sms"}'
+
+═══════════════════════════════════════════════════════════════
+  TEST CREDENTIALS
+═══════════════════════════════════════════════════════════════
+Personal Number: 999999
+Password: password
+Phone: +254113334370
+Role: Admin
+
+═══════════════════════════════════════════════════════════════
+  TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+No SMS received?
+1. Check Africa's Talking dashboard: https://account.africastalking.com/apps/sandbox
+2. Add +254113334370 to sandbox test numbers
+3. Check logs: docker exec gfms_app tail -f storage/logs/laravel.log
+
+SMS disabled?
+- Check .env has: AFRICASTALKING_ENABLED=true
+- Restart: docker restart gfms_app gfms_queue
+
+Test with Email instead:
+curl -X POST http://localhost:8000/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"personal_number":"999999","password":"password","otp_channel":"email"}'
+
+Then check: http://localhost:8025
+
+═══════════════════════════════════════════════════════════════

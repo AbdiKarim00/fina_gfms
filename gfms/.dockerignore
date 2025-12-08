@@ -1,0 +1,46 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+README.md
+docs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Laravel
+/vendor/
+/storage/*.key
+/storage/logs/*
+!/storage/logs/.gitkeep
+.env
+.env.backup
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+auth.json
+
+# Testing
+/coverage/
+.phpunit.cache
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+/public/hot
+/public/storage
+/public/build

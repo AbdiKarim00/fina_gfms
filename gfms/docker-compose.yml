@@ -1,0 +1,192 @@
+#version: '3.8'
+#the attribute `version` is obsolete,
+services:
+  # Database with PostGIS
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: gfms_postgres
+    environment:
+      POSTGRES_DB: gfms
+      POSTGRES_USER: gfms
+      POSTGRES_PASSWORD: gfms
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infrastructure/docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gfms"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gfms_network
+
+  # Redis
+  redis:
+    image: redis:7.2-alpine
+    container_name: gfms_redis
+    command: redis-server --appendonly yes --maxmemory 2gb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gfms_network
+
+  # PHP-FPM Application
+  app:
+    build:
+      context: ./apps/backend
+      dockerfile: ../../infrastructure/docker/php/Dockerfile
+      target: development
+    container_name: gfms_app
+    working_dir: /var/www/html
+    volumes:
+      - ./apps/backend:/var/www/html
+      - ./infrastructure/docker/php/php.ini:/usr/local/etc/php/conf.d/custom.ini
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_HOST=postgres
+      - DB_DATABASE=gfms
+      - DB_USERNAME=gfms
+      - DB_PASSWORD=gfms
+      - REDIS_HOST=redis
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - gfms_network
+
+  # Nginx Web Server
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: gfms_nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./apps/backend:/var/www/html
+      - ./infrastructure/docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./infrastructure/docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app
+    networks:
+      - gfms_network
+
+  # Laravel Queue Worker
+  queue:
+    build:
+      context: ./apps/backend
+      dockerfile: ../../infrastructure/docker/php/Dockerfile
+      target: development
+    container_name: gfms_queue
+    working_dir: /var/www/html
+    command: php artisan queue:work --tries=3 --timeout=90 --sleep=3
+    volumes:
+      - ./apps/backend:/var/www/html
+    environment:
+      - APP_ENV=local
+      - DB_HOST=postgres
+      - DB_DATABASE=gfms
+      - DB_USERNAME=gfms
+      - DB_PASSWORD=gfms
+      - REDIS_HOST=redis
+      - QUEUE_CONNECTION=redis
+    depends_on:
+      - app
+      - redis
+    restart: unless-stopped
+    networks:
+      - gfms_network
+
+  # Laravel Scheduler
+  scheduler:
+    build:
+      context: ./apps/backend
+      dockerfile: ../../infrastructure/docker/php/Dockerfile
+      target: development
+    container_name: gfms_scheduler
+    working_dir: /var/www/html
+    command: sh -c "while true; do php artisan schedule:run --verbose --no-interaction & sleep 60; done"
+    volumes:
+      - ./apps/backend:/var/www/html
+    environment:
+      - APP_ENV=local
+      - DB_HOST=postgres
+      - DB_DATABASE=gfms
+      - DB_USERNAME=gfms
+      - DB_PASSWORD=gfms
+      - REDIS_HOST=redis
+    depends_on:
+      - app
+    restart: unless-stopped
+    networks:
+      - gfms_network
+
+  # Laravel Reverb (WebSocket Server)
+  reverb:
+    build:
+      context: ./apps/backend
+      dockerfile: ../../infrastructure/docker/php/Dockerfile
+      target: development
+    container_name: gfms_reverb
+    working_dir: /var/www/html
+    command: php artisan reverb:start --host=0.0.0.0 --port=8080
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./apps/backend:/var/www/html
+    environment:
+      - APP_ENV=local
+      - REVERB_HOST=0.0.0.0
+      - REVERB_PORT=8080
+    depends_on:
+      - app
+      - redis
+    restart: unless-stopped
+    networks:
+      - gfms_network
+
+  # pgAdmin (PostgreSQL Management)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: gfms_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gfms.go.ke
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - gfms_network
+
+  # MailHog for email testing
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: gfms_mailhog
+    ports:
+      - "1025:1025" # SMTP server
+      - "8025:8025" # Web UI
+    networks:
+      - gfms_network
+
+volumes:
+  postgres_data:
+  redis_data:
+  pgadmin_data:
+
+networks:
+  gfms_network:
+    driver: bridge
