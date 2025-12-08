@@ -26,6 +26,7 @@ import { Vehicle } from '../types';
 import { VehicleDetailsModal } from '../components/vehicles/VehicleDetailsModal';
 import { VehicleFormModal } from '../components/vehicles/VehicleFormModal';
 import { VehicleDeleteModal } from '../components/vehicles/VehicleDeleteModal';
+import { VehicleStats } from '../components/vehicles/VehicleStats';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -250,6 +251,9 @@ export const VehiclesPageV2: React.FC = () => {
             </Button>
           </Col>
         </Row>
+
+        {/* Statistics Cards */}
+        <VehicleStats vehicles={vehicles} />
 
         {/* Filters */}
         <Card>
