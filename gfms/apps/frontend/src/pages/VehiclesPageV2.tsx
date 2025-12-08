@@ -23,6 +23,9 @@ import {
 import type { ColumnsType } from 'antd/es/table';
 import { apiClient } from '../services/api';
 import { Vehicle } from '../types';
+import { VehicleDetailsModal } from '../components/vehicles/VehicleDetailsModal';
+import { VehicleFormModal } from '../components/vehicles/VehicleFormModal';
+import { VehicleDeleteModal } from '../components/vehicles/VehicleDeleteModal';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -34,6 +37,12 @@ export const VehiclesPageV2: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [fuelTypeFilter, setFuelTypeFilter] = useState<string>('all');
+  
+  // Modal states
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+  const [formModalOpen, setFormModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
 
   useEffect(() => {
     fetchVehicles();
@@ -99,6 +108,37 @@ export const VehiclesPageV2: React.FC = () => {
     setFuelTypeFilter('all');
   };
 
+  // Modal handlers
+  const handleViewDetails = (vehicle: Vehicle) => {
+    setSelectedVehicle(vehicle);
+    setDetailsModalOpen(true);
+  };
+
+  const handleAddVehicle = () => {
+    setSelectedVehicle(null);
+    setFormModalOpen(true);
+  };
+
+  const handleEditVehicle = (vehicle: Vehicle) => {
+    setSelectedVehicle(vehicle);
+    setDetailsModalOpen(false);
+    setFormModalOpen(true);
+  };
+
+  const handleDeleteVehicle = (vehicle: Vehicle) => {
+    setSelectedVehicle(vehicle);
+    setDetailsModalOpen(false);
+    setDeleteModalOpen(true);
+  };
+
+  const handleFormSuccess = () => {
+    fetchVehicles();
+  };
+
+  const handleDeleteSuccess = () => {
+    fetchVehicles();
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'active':
@@ -154,16 +194,32 @@ export const VehiclesPageV2: React.FC = () => {
       title: 'Actions',
       key: 'actions',
       width: 150,
-      render: () => (
+      render: (_, record) => (
         <Space size="small">
           <Tooltip title="View Details">
-            <Button type="text" icon={<EyeOutlined />} size="small" />
+            <Button
+              type="text"
+              icon={<EyeOutlined />}
+              size="small"
+              onClick={() => handleViewDetails(record)}
+            />
           </Tooltip>
           <Tooltip title="Edit">
-            <Button type="text" icon={<EditOutlined />} size="small" />
+            <Button
+              type="text"
+              icon={<EditOutlined />}
+              size="small"
+              onClick={() => handleEditVehicle(record)}
+            />
           </Tooltip>
           <Tooltip title="Delete">
-            <Button type="text" danger icon={<DeleteOutlined />} size="small" />
+            <Button
+              type="text"
+              danger
+              icon={<DeleteOutlined />}
+              size="small"
+              onClick={() => handleDeleteVehicle(record)}
+            />
           </Tooltip>
         </Space>
       ),
@@ -184,7 +240,12 @@ export const VehiclesPageV2: React.FC = () => {
             </Text>
           </Col>
           <Col>
-            <Button type="primary" icon={<PlusOutlined />} size="large">
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              size="large"
+              onClick={handleAddVehicle}
+            >
               Add Vehicle
             </Button>
           </Col>
@@ -255,6 +316,29 @@ export const VehiclesPageV2: React.FC = () => {
           />
         </Card>
       </Space>
+
+      {/* Modals */}
+      <VehicleDetailsModal
+        vehicle={selectedVehicle}
+        open={detailsModalOpen}
+        onClose={() => setDetailsModalOpen(false)}
+        onEdit={handleEditVehicle}
+        onDelete={handleDeleteVehicle}
+      />
+
+      <VehicleFormModal
+        vehicle={selectedVehicle || undefined}
+        open={formModalOpen}
+        onClose={() => setFormModalOpen(false)}
+        onSuccess={handleFormSuccess}
+      />
+
+      <VehicleDeleteModal
+        vehicle={selectedVehicle}
+        open={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onSuccess={handleDeleteSuccess}
+      />
     </div>
   );
 };

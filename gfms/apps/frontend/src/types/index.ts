@@ -20,9 +20,21 @@ export interface Vehicle {
   make: string;
   model: string;
   year: number;
-  color?: string;
   fuel_type: string;
   status: 'active' | 'inactive' | 'maintenance' | 'disposed';
+  // Additional fields from real fleet register
+  engine_number?: string;
+  chassis_number?: string;
+  color?: string;
+  mileage?: number;
+  capacity?: number;
+  purchase_year?: number;
+  current_location?: string;
+  original_location?: string;
+  responsible_officer?: string;
+  has_log_book?: boolean;
+  notes?: string;
+  organization_id?: number;
   created_at: string;
   updated_at: string;
 }
