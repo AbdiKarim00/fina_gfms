@@ -6,7 +6,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { DashboardLayout } from './layouts/DashboardLayout';
 import { LoginPage } from './pages/LoginPage';
 import { VerifyOtpPage } from './pages/VerifyOtpPage';
-import { DashboardPage } from './pages/DashboardPage';
+import { DashboardPageV2 as DashboardPage } from './pages/DashboardPageV2';
 import { VehiclesPage } from './pages/VehiclesPage';
 import { antdTheme } from './theme/antd-theme';
 
