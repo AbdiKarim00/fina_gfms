@@ -1,58 +1,135 @@
-import React from 'react';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Layout, Menu, Avatar, Dropdown, Typography, Space } from 'antd';
+import {
+  DashboardOutlined,
+  CarOutlined,
+  UserOutlined,
+  LogoutOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+} from '@ant-design/icons';
+import type { MenuProps } from 'antd';
 import { useAuth } from '../contexts/AuthContext';
+
+const { Header, Sider, Content } = Layout;
+const { Text } = Typography;
 
 export const DashboardLayout: React.FC = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [collapsed, setCollapsed] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
-  return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Navigation */}
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
-                <h1 className="text-xl font-bold text-blue-600">GFMS</h1>
-              </div>
-              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                <Link
-                  to="/dashboard"
-                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  to="/vehicles"
-                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                >
-                  Vehicles
-                </Link>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-4">{user?.name}</span>
-              <button
-                onClick={handleLogout}
-                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded text-sm"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+  const menuItems: MenuProps['items'] = [
+    {
+      key: '/dashboard',
+      icon: <DashboardOutlined />,
+      label: 'Dashboard',
+      onClick: () => navigate('/dashboard'),
+    },
+    {
+      key: '/vehicles',
+      icon: <CarOutlined />,
+      label: 'Vehicles',
+      onClick: () => navigate('/vehicles'),
+    },
+  ];
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <Outlet />
-      </main>
-    </div>
+  const userMenuItems: MenuProps['items'] = [
+    {
+      key: 'profile',
+      icon: <UserOutlined />,
+      label: 'Profile',
+    },
+    {
+      type: 'divider',
+    },
+    {
+      key: 'logout',
+      icon: <LogoutOutlined />,
+      label: 'Logout',
+      danger: true,
+      onClick: handleLogout,
+    },
+  ];
+
+  return (
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        style={{
+          overflow: 'auto',
+          height: '100vh',
+          position: 'fixed',
+          left: 0,
+          top: 0,
+          bottom: 0,
+        }}
+      >
+        <div
+          style={{
+            height: 64,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#fff',
+            fontSize: collapsed ? '16px' : '20px',
+            fontWeight: 'bold',
+            transition: 'all 0.2s',
+          }}
+        >
+          {collapsed ? 'GFMS' : 'Kenya GFMS'}
+        </div>
+        <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={[location.pathname]}
+          items={menuItems}
+        />
+      </Sider>
+      <Layout style={{ marginLeft: collapsed ? 80 : 200, transition: 'all 0.2s' }}>
+        <Header
+          style={{
+            padding: '0 24px',
+            background: '#fff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            boxShadow: '0 1px 4px rgba(0,21,41,.08)',
+          }}
+        >
+          <Space>
+            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+              style: { fontSize: '18px', cursor: 'pointer' },
+              onClick: () => setCollapsed(!collapsed),
+            })}
+          </Space>
+          <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
+            <Space style={{ cursor: 'pointer' }}>
+              <Avatar style={{ backgroundColor: '#006600' }} icon={<UserOutlined />} />
+              <Text>{user?.name}</Text>
+            </Space>
+          </Dropdown>
+        </Header>
+        <Content
+          style={{
+            margin: '24px 16px',
+            padding: 24,
+            minHeight: 280,
+            background: '#f0f2f5',
+          }}
+        >
+          <Outlet />
+        </Content>
+      </Layout>
+    </Layout>
   );
 };

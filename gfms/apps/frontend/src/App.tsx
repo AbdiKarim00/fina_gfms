@@ -11,7 +11,7 @@ import { antdTheme } from './theme/antd-theme';
 const LoginPage = lazy(() => import('./pages/LoginPage').then(m => ({ default: m.LoginPage })));
 const VerifyOtpPage = lazy(() => import('./pages/VerifyOtpPage').then(m => ({ default: m.VerifyOtpPage })));
 const DashboardPage = lazy(() => import('./pages/DashboardPageV2').then(m => ({ default: m.DashboardPageV2 })));
-const VehiclesPage = lazy(() => import('./pages/VehiclesPage').then(m => ({ default: m.VehiclesPage })));
+const VehiclesPage = lazy(() => import('./pages/VehiclesPageV2').then(m => ({ default: m.VehiclesPageV2 })));
 
 const App: React.FC = () => {
   return (
