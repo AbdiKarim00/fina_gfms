@@ -54,25 +54,28 @@ Route::prefix('v1')->group(function () {
             return $request->user();
         });
 
-        // Example: Permission-based routes
-        Route::middleware('permission:view_vehicles')->group(function () {
-            Route::get('/vehicles', function () {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Vehicle list (requires view_vehicles permission)',
-                    'data' => [],
-                ]);
-            });
+        // Vehicle routes with permission-based access
+        Route::prefix('vehicles')->group(function () {
+            // Statistics endpoint (view permission)
+            Route::get('/statistics', [App\Http\Controllers\VehicleController::class, 'statistics'])
+                ->middleware('permission:view_vehicles');
+            
+            // Bulk operations
+            Route::post('/bulk-update', [App\Http\Controllers\VehicleController::class, 'bulkUpdate'])
+                ->middleware('permission:edit_vehicles');
+            Route::post('/bulk-delete', [App\Http\Controllers\VehicleController::class, 'bulkDelete'])
+                ->middleware('permission:delete_vehicles');
         });
 
-        Route::middleware('permission:create_vehicles')->group(function () {
-            Route::post('/vehicles', function () {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Vehicle created (requires create_vehicles permission)',
-                ]);
-            });
-        });
+        // RESTful vehicle routes
+        Route::apiResource('vehicles', App\Http\Controllers\VehicleController::class)
+            ->middleware([
+                'index' => 'permission:view_vehicles',
+                'show' => 'permission:view_vehicles',
+                'store' => 'permission:create_vehicles',
+                'update' => 'permission:edit_vehicles',
+                'destroy' => 'permission:delete_vehicles',
+            ]);
 
         // Example: Role-based routes
         Route::middleware('role:Admin')->group(function () {
