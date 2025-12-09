@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Layout, Menu, Avatar, Dropdown, Typography, Space } from 'antd';
+import { Layout, Menu, Avatar, Dropdown, Typography, Space, Badge } from 'antd';
 import {
-  DashboardOutlined,
-  CarOutlined,
   UserOutlined,
   LogoutOutlined,
   MenuFoldOutlined,
@@ -11,6 +9,7 @@ import {
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { useAuth } from '../contexts/AuthContext';
+import { getRoleMenuItems } from '../utils/roleMenus';
 
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
@@ -26,20 +25,22 @@ export const DashboardLayout: React.FC = () => {
     navigate('/login');
   };
 
-  const menuItems: MenuProps['items'] = [
-    {
-      key: '/dashboard',
-      icon: <DashboardOutlined />,
-      label: 'Dashboard',
-      onClick: () => navigate('/dashboard'),
-    },
-    {
-      key: '/vehicles',
-      icon: <CarOutlined />,
-      label: 'Vehicles',
-      onClick: () => navigate('/vehicles'),
-    },
-  ];
+  // Get role-specific menu items
+  const roleMenuItems = getRoleMenuItems(user?.roles || []);
+
+  const menuItems: MenuProps['items'] = roleMenuItems.map((item) => ({
+    key: item.key,
+    icon: item.icon,
+    label: item.badge ? (
+      <Space>
+        {item.label}
+        <Badge count={item.badge} style={{ backgroundColor: '#faad14' }} />
+      </Space>
+    ) : (
+      item.label
+    ),
+    onClick: () => navigate(item.path),
+  }));
 
   const userMenuItems: MenuProps['items'] = [
     {
@@ -80,13 +81,20 @@ export const DashboardLayout: React.FC = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            flexDirection: 'column',
             color: '#fff',
-            fontSize: collapsed ? '16px' : '20px',
+            fontSize: collapsed ? '12px' : '16px',
             fontWeight: 'bold',
             transition: 'all 0.2s',
+            padding: '8px',
           }}
         >
-          {collapsed ? 'GFMS' : 'Kenya GFMS'}
+          <div>{collapsed ? 'GFMS' : 'Kenya GFMS'}</div>
+          {!collapsed && user?.roles && (
+            <Text style={{ color: 'rgba(255,255,255,0.65)', fontSize: '11px' }}>
+              {user.roles[0]}
+            </Text>
+          )}
         </div>
         <Menu
           theme="dark"
