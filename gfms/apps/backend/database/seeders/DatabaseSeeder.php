@@ -137,6 +137,11 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
+        // Seed bookings
+        $this->call([
+            BookingSeeder::class,
+        ]);
+
         $this->command->info('');
         $this->command->info('✓ All data seeded successfully!');
         $this->command->info('');

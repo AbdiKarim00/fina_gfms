@@ -12,7 +12,7 @@ const { Title, Text } = Typography;
 export const DriverDashboard: React.FC = () => {
   return (
     <div style={{ padding: '24px' }}>
-      <Space direction="vertical" size="large" style={{ width: '100%' }}>
+      <Space vertical size="large" style={{ width: '100%' }}>
         <div>
           <Title level={2} style={{ margin: 0 }}>
             Driver Dashboard
@@ -21,7 +21,7 @@ export const DriverDashboard: React.FC = () => {
         </div>
 
         <Alert
-          message="Driver Access"
+          title="Driver Access"
           description="View your vehicle assignments, log trips, and record fuel consumption."
           type="success"
           showIcon
@@ -44,7 +44,7 @@ export const DriverDashboard: React.FC = () => {
                 title="Trips This Month"
                 value={0}
                 prefix={<FileTextOutlined style={{ color: '#1890ff' }} />}
-                valueStyle={{ color: '#1890ff' }}
+                styles={{ content: { color: '#1890ff' } }}
               />
             </Card>
           </Col>
@@ -56,7 +56,7 @@ export const DriverDashboard: React.FC = () => {
                 value={0}
                 suffix="km"
                 prefix={<DashboardOutlined style={{ color: '#722ed1' }} />}
-                valueStyle={{ color: '#722ed1' }}
+                styles={{ content: { color: '#722ed1' } }}
               />
             </Card>
           </Col>

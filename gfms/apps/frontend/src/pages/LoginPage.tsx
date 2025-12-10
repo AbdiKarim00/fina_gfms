@@ -41,7 +41,7 @@ export const LoginPage: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center py-12 px-4" style={{ background: 'linear-gradient(135deg, #E8F5E9 0%, #FFFFFF 50%, #F1F8E9 100%)' }}>
       <div style={{ maxWidth: 450, width: '100%' }}>
         {/* Logo/Header Section */}
-        <Space direction="vertical" size="large" style={{ width: '100%', marginBottom: 32 }} align="center">
+        <Space vertical size="large" style={{ width: '100%', marginBottom: 32 }} align="center">
           <div style={{ 
             width: 80, 
             height: 80, 
@@ -54,7 +54,7 @@ export const LoginPage: React.FC = () => {
           }}>
             <SafetyOutlined style={{ fontSize: 48, color: '#FFFFFF' }} />
           </div>
-          <Space direction="vertical" size={4} align="center">
+          <Space vertical size={4} align="center">
             <Title level={2} style={{ margin: 0, color: '#000000' }}>GFMS</Title>
             <Text type="secondary" style={{ fontSize: 14 }}>Kenya Government Fleet Management System</Text>
           </Space>
@@ -67,12 +67,12 @@ export const LoginPage: React.FC = () => {
             boxShadow: '0 4px 24px rgba(0, 0, 0, 0.08)'
           }}
         >
-          <Space direction="vertical" size="large" style={{ width: '100%' }}>
+          <Space vertical size="large" style={{ width: '100%' }}>
             <Title level={4} style={{ margin: 0 }}>Sign in to your account</Title>
             
             {error && (
               <Alert
-                message={error}
+                title={error}
                 type="error"
                 showIcon
                 closable
@@ -134,7 +134,7 @@ export const LoginPage: React.FC = () => {
 
             {/* Demo Credentials */}
             <Alert
-              message={
+              title={
                 <Space size="small">
                   <Text strong>Demo:</Text>
                   <Text code>123456</Text>

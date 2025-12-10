@@ -11,6 +11,6 @@ export const PageLoader: React.FC = () => (
       width: '100%',
     }}
   >
-    <Spin size="large" tip="Loading..." />
+    <Spin size="large" />
   </div>
 );

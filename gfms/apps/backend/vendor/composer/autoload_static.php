@@ -301,9 +301,9 @@ class ComposerStaticInit94169e119d1ab722e433151e2e98bb0c
         ),
         'phpDocumentor\\Reflection\\' => 
         array (
-            0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+            0 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
         ),
         'ZipStream\\' => 
         array (
@@ -487,8 +487,8 @@ class ComposerStaticInit94169e119d1ab722e433151e2e98bb0c
         ),
         'Spatie\\LaravelIgnition\\' => 
         array (
-            0 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition',
-            1 => __DIR__ . '/..' . '/spatie/laravel-ignition/src',
+            0 => __DIR__ . '/..' . '/spatie/laravel-ignition/src',
+            1 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition',
         ),
         'Spatie\\Image\\' => 
         array (
@@ -500,8 +500,8 @@ class ComposerStaticInit94169e119d1ab722e433151e2e98bb0c
         ),
         'Spatie\\Ignition\\' => 
         array (
-            0 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/ignition',
-            1 => __DIR__ . '/..' . '/spatie/ignition/src',
+            0 => __DIR__ . '/..' . '/spatie/ignition/src',
+            1 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/ignition',
         ),
         'Spatie\\FlareClient\\' => 
         array (
@@ -986,11 +986,41 @@ class ComposerStaticInit94169e119d1ab722e433151e2e98bb0c
     );
 
     public static $classMap = array (
+        'App\\Exceptions\\AccountLockedException' => __DIR__ . '/../..' . '/app/Exceptions/AccountLockedException.php',
+        'App\\Exceptions\\AuthenticationException' => __DIR__ . '/../..' . '/app/Exceptions/AuthenticationException.php',
+        'App\\Exceptions\\InactiveAccountException' => __DIR__ . '/../..' . '/app/Exceptions/InactiveAccountException.php',
+        'App\\Exceptions\\InvalidOtpException' => __DIR__ . '/../..' . '/app/Exceptions/InvalidOtpException.php',
         'App\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthController.php',
+        'App\\Http\\Controllers\\BookingController' => __DIR__ . '/../..' . '/app/Http/Controllers/BookingController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\DevToolsController' => __DIR__ . '/../..' . '/app/Http/Controllers/DevToolsController.php',
+        'App\\Http\\Controllers\\VehicleController' => __DIR__ . '/../..' . '/app/Http/Controllers/VehicleController.php',
+        'App\\Http\\Middleware\\CheckPermission' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckPermission.php',
+        'App\\Http\\Middleware\\CheckRole' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckRole.php',
+        'App\\Http\\Requests\\ApproveBookingRequest' => __DIR__ . '/../..' . '/app/Http/Requests/ApproveBookingRequest.php',
+        'App\\Http\\Requests\\LoginRequest' => __DIR__ . '/../..' . '/app/Http/Requests/LoginRequest.php',
+        'App\\Http\\Requests\\RejectBookingRequest' => __DIR__ . '/../..' . '/app/Http/Requests/RejectBookingRequest.php',
+        'App\\Http\\Requests\\StoreBookingRequest' => __DIR__ . '/../..' . '/app/Http/Requests/StoreBookingRequest.php',
+        'App\\Http\\Requests\\StoreVehicleRequest' => __DIR__ . '/../..' . '/app/Http/Requests/StoreVehicleRequest.php',
+        'App\\Http\\Requests\\UpdateBookingRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateBookingRequest.php',
+        'App\\Http\\Requests\\UpdateVehicleRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateVehicleRequest.php',
+        'App\\Http\\Requests\\VerifyOtpRequest' => __DIR__ . '/../..' . '/app/Http/Requests/VerifyOtpRequest.php',
+        'App\\Mail\\OtpMail' => __DIR__ . '/../..' . '/app/Mail/OtpMail.php',
+        'App\\Models\\Booking' => __DIR__ . '/../..' . '/app/Models/Booking.php',
         'App\\Models\\Organization' => __DIR__ . '/../..' . '/app/Models/Organization.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Models\\Vehicle' => __DIR__ . '/../..' . '/app/Models/Vehicle.php',
+        'App\\Repositories\\BookingRepository' => __DIR__ . '/../..' . '/app/Repositories/BookingRepository.php',
+        'App\\Repositories\\UserRepository' => __DIR__ . '/../..' . '/app/Repositories/UserRepository.php',
+        'App\\Repositories\\VehicleRepository' => __DIR__ . '/../..' . '/app/Repositories/VehicleRepository.php',
         'App\\Rules\\ValidPersonalNumber' => __DIR__ . '/../..' . '/app/Rules/ValidPersonalNumber.php',
+        'App\\Services\\AuthService' => __DIR__ . '/../..' . '/app/Services/AuthService.php',
+        'App\\Services\\BookingService' => __DIR__ . '/../..' . '/app/Services/BookingService.php',
+        'App\\Services\\OtpService' => __DIR__ . '/../..' . '/app/Services/OtpService.php',
+        'App\\Services\\SmsService' => __DIR__ . '/../..' . '/app/Services/SmsService.php',
+        'App\\Services\\TwilioSmsService' => __DIR__ . '/../..' . '/app/Services/TwilioSmsService.php',
+        'App\\Services\\UnifiedSmsService' => __DIR__ . '/../..' . '/app/Services/UnifiedSmsService.php',
+        'App\\Services\\VehicleService' => __DIR__ . '/../..' . '/app/Services/VehicleService.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Barryvdh\\DomPDF\\Facade\\Pdf' => __DIR__ . '/..' . '/barryvdh/laravel-dompdf/src/Facade/Pdf.php',
         'Barryvdh\\DomPDF\\PDF' => __DIR__ . '/..' . '/barryvdh/laravel-dompdf/src/PDF.php',
@@ -1164,9 +1194,11 @@ class ComposerStaticInit94169e119d1ab722e433151e2e98bb0c
         'Cron\\HoursField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/HoursField.php',
         'Cron\\MinutesField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MinutesField.php',
         'Cron\\MonthField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MonthField.php',
+        'Database\\Seeders\\BookingSeeder' => __DIR__ . '/../..' . '/database/seeders/BookingSeeder.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
         'Database\\Seeders\\OrganizationSeeder' => __DIR__ . '/../..' . '/database/seeders/OrganizationSeeder.php',
         'Database\\Seeders\\RoleAndPermissionSeeder' => __DIR__ . '/../..' . '/database/seeders/RoleAndPermissionSeeder.php',
+        'Database\\Seeders\\RolePermissionSeeder' => __DIR__ . '/../..' . '/database/seeders/RolePermissionSeeder.php',
         'Database\\Seeders\\UserSeeder' => __DIR__ . '/../..' . '/database/seeders/UserSeeder.php',
         'Database\\Seeders\\VehicleSeeder' => __DIR__ . '/../..' . '/database/seeders/VehicleSeeder.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',

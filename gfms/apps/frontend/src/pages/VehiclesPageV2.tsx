@@ -27,11 +27,13 @@ import { VehicleDetailsModal } from '../components/vehicles/VehicleDetailsModal'
 import { VehicleFormModal } from '../components/vehicles/VehicleFormModal';
 import { VehicleDeleteModal } from '../components/vehicles/VehicleDeleteModal';
 import { VehicleStats } from '../components/vehicles/VehicleStats';
+import { usePermissions } from '../hooks/usePermissions';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 
 export const VehiclesPageV2: React.FC = () => {
+  const permissions = usePermissions();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [filteredVehicles, setFilteredVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
@@ -140,6 +142,24 @@ export const VehiclesPageV2: React.FC = () => {
     fetchVehicles();
   };
 
+  // Get role-specific page description
+  const getPageDescription = () => {
+    switch (permissions.role) {
+      case 'super admin':
+        return 'Manage all fleet vehicles with full administrative access';
+      case 'admin':
+        return "Manage your organization's fleet vehicles";
+      case 'fleet manager':
+        return 'Manage fleet vehicles including registration and maintenance';
+      case 'transport officer':
+        return 'View available vehicles and check availability for bookings';
+      case 'driver':
+        return 'View your assigned vehicles and their details';
+      default:
+        return 'Manage your fleet vehicles including registration, maintenance, and status';
+    }
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'active':
@@ -205,23 +225,27 @@ export const VehiclesPageV2: React.FC = () => {
               onClick={() => handleViewDetails(record)}
             />
           </Tooltip>
-          <Tooltip title="Edit">
-            <Button
-              type="text"
-              icon={<EditOutlined />}
-              size="small"
-              onClick={() => handleEditVehicle(record)}
-            />
-          </Tooltip>
-          <Tooltip title="Delete">
-            <Button
-              type="text"
-              danger
-              icon={<DeleteOutlined />}
-              size="small"
-              onClick={() => handleDeleteVehicle(record)}
-            />
-          </Tooltip>
+          {permissions.canEditVehicles && (
+            <Tooltip title="Edit">
+              <Button
+                type="text"
+                icon={<EditOutlined />}
+                size="small"
+                onClick={() => handleEditVehicle(record)}
+              />
+            </Tooltip>
+          )}
+          {permissions.canDeleteVehicles && (
+            <Tooltip title="Delete">
+              <Button
+                type="text"
+                danger
+                icon={<DeleteOutlined />}
+                size="small"
+                onClick={() => handleDeleteVehicle(record)}
+              />
+            </Tooltip>
+          )}
         </Space>
       ),
     },
@@ -229,27 +253,27 @@ export const VehiclesPageV2: React.FC = () => {
 
   return (
     <div style={{ padding: '24px' }}>
-      <Space direction="vertical" size="large" style={{ width: '100%' }}>
+      <Space vertical size="large" style={{ width: '100%' }}>
         {/* Header */}
         <Row justify="space-between" align="middle">
           <Col>
             <Title level={2} style={{ margin: 0 }}>
               Vehicles
             </Title>
-            <Text type="secondary">
-              Manage your fleet vehicles including registration, maintenance, and status
-            </Text>
+            <Text type="secondary">{getPageDescription()}</Text>
           </Col>
-          <Col>
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              size="large"
-              onClick={handleAddVehicle}
-            >
-              Add Vehicle
-            </Button>
-          </Col>
+          {permissions.canCreateVehicles && (
+            <Col>
+              <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                size="large"
+                onClick={handleAddVehicle}
+              >
+                Add Vehicle
+              </Button>
+            </Col>
+          )}
         </Row>
 
         {/* Statistics Cards */}

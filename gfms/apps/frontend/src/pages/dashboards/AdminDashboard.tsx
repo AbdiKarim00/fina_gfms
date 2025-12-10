@@ -12,7 +12,7 @@ const { Title, Text } = Typography;
 export const AdminDashboard: React.FC = () => {
   return (
     <div style={{ padding: '24px' }}>
-      <Space direction="vertical" size="large" style={{ width: '100%' }}>
+      <Space vertical size="large" style={{ width: '100%' }}>
         <div>
           <Title level={2} style={{ margin: 0 }}>
             Admin Dashboard
@@ -21,7 +21,7 @@ export const AdminDashboard: React.FC = () => {
         </div>
 
         <Alert
-          message="Admin Access"
+          title="Admin Access"
           description="Manage vehicles, users, bookings, and maintenance for your organization."
           type="success"
           showIcon
@@ -34,7 +34,7 @@ export const AdminDashboard: React.FC = () => {
                 title="Total Vehicles"
                 value={6}
                 prefix={<CarOutlined style={{ color: '#006600' }} />}
-                valueStyle={{ color: '#006600' }}
+                styles={{ content: { color: '#006600' } }}
               />
             </Card>
           </Col>
@@ -45,7 +45,7 @@ export const AdminDashboard: React.FC = () => {
                 title="Active Bookings"
                 value={0}
                 prefix={<FileTextOutlined style={{ color: '#1890ff' }} />}
-                valueStyle={{ color: '#1890ff' }}
+                styles={{ content: { color: '#1890ff' } }}
               />
             </Card>
           </Col>
@@ -56,7 +56,7 @@ export const AdminDashboard: React.FC = () => {
                 title="Maintenance Due"
                 value={1}
                 prefix={<ToolOutlined style={{ color: '#faad14' }} />}
-                valueStyle={{ color: '#faad14' }}
+                styles={{ content: { color: '#faad14' } }}
               />
             </Card>
           </Col>
@@ -67,7 +67,7 @@ export const AdminDashboard: React.FC = () => {
                 title="Users"
                 value={5}
                 prefix={<TeamOutlined style={{ color: '#722ed1' }} />}
-                valueStyle={{ color: '#722ed1' }}
+                styles={{ content: { color: '#722ed1' } }}
               />
             </Card>
           </Col>

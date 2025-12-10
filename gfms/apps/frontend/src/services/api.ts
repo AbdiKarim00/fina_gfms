@@ -26,15 +26,55 @@ class ApiClient {
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
+        
+        // Debug logging in development
+        if (import.meta.env.DEV) {
+          console.log('🌐 API Request:', {
+            method: config.method?.toUpperCase(),
+            url: config.url,
+            baseURL: config.baseURL,
+            fullURL: `${config.baseURL}${config.url}`,
+            headers: config.headers,
+            data: config.data,
+            params: config.params,
+          });
+        }
+        
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) => {
+        console.error('❌ Request interceptor error:', error);
+        return Promise.reject(error);
+      }
     );
 
     // Response interceptor
     this.client.interceptors.response.use(
-      (response) => response,
+      (response) => {
+        // Debug logging in development
+        if (import.meta.env.DEV) {
+          console.log('✅ API Response:', {
+            status: response.status,
+            statusText: response.statusText,
+            url: response.config.url,
+            data: response.data,
+          });
+        }
+        return response;
+      },
       (error: AxiosError) => {
+        // Log errors only in development
+        if (import.meta.env.DEV) {
+          console.error('❌ API Error:', {
+            message: error.message,
+            status: error.response?.status,
+            statusText: error.response?.statusText,
+            url: error.config?.url,
+            method: error.config?.method,
+            data: error.response?.data,
+          });
+        }
+        
         if (error.response?.status === 401) {
           localStorage.removeItem('auth_token');
           window.location.href = '/login';

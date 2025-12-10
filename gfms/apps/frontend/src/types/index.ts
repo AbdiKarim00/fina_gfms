@@ -76,3 +76,56 @@ export interface ApiError {
   message: string;
   errors?: Record<string, string[]>;
 }
+
+export interface Booking {
+  id: number;
+  vehicle_id: number;
+  requester_id: number;
+  driver_id?: number;
+  start_date: string;
+  end_date: string;
+  purpose: string;
+  destination: string;
+  passengers: number;
+  status: 'pending' | 'approved' | 'rejected' | 'completed' | 'cancelled';
+  priority: 'high' | 'medium' | 'low';
+  approved_by?: number;
+  approved_at?: string;
+  rejection_reason?: string;
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+  // Relationships
+  vehicle?: Vehicle;
+  requester?: User;
+  driver?: User;
+  approver?: User;
+}
+
+export interface BookingFormData {
+  vehicle_id: number;
+  driver_id?: number;
+  start_date: string;
+  end_date: string;
+  purpose: string;
+  destination: string;
+  passengers: number;
+  priority?: 'high' | 'medium' | 'low';
+  notes?: string;
+}
+
+export interface BookingFilters {
+  status?: string;
+  priority?: string;
+  vehicle_id?: number;
+  start_date?: string;
+  end_date?: string;
+}
+
+export interface BookingConflict {
+  id: number;
+  vehicle_id: number;
+  start_date: string;
+  end_date: string;
+  requester?: User;
+}

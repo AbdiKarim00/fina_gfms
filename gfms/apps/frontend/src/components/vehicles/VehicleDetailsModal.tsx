@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, Descriptions, Tag, Space, Button, Divider } from 'antd';
 import { EditOutlined, DeleteOutlined, CarOutlined } from '@ant-design/icons';
 import { Vehicle } from '../../types';
+import { usePermissions } from '../../hooks/usePermissions';
 
 interface VehicleDetailsModalProps {
   vehicle: Vehicle | null;
@@ -18,6 +19,8 @@ export const VehicleDetailsModal: React.FC<VehicleDetailsModalProps> = ({
   onEdit,
   onDelete,
 }) => {
+  const permissions = usePermissions();
+  
   if (!vehicle) return null;
 
   const getStatusColor = (status: string) => {
@@ -48,7 +51,7 @@ export const VehicleDetailsModal: React.FC<VehicleDetailsModalProps> = ({
         <Button key="close" onClick={onClose}>
           Close
         </Button>,
-        onEdit && (
+        permissions.canEditVehicles && onEdit && (
           <Button
             key="edit"
             type="primary"
@@ -58,7 +61,7 @@ export const VehicleDetailsModal: React.FC<VehicleDetailsModalProps> = ({
             Edit
           </Button>
         ),
-        onDelete && (
+        permissions.canDeleteVehicles && onDelete && (
           <Button
             key="delete"
             danger

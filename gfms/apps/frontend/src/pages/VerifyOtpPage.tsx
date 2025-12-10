@@ -49,7 +49,7 @@ export const VerifyOtpPage: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center py-12 px-4" style={{ background: 'linear-gradient(135deg, #E8F5E9 0%, #FFFFFF 50%, #F1F8E9 100%)' }}>
       <div style={{ maxWidth: 450, width: '100%' }}>
         {/* Logo/Header Section */}
-        <Space direction="vertical" size="large" style={{ width: '100%', marginBottom: 32 }} align="center">
+        <Space vertical size="large" style={{ width: '100%', marginBottom: 32 }} align="center">
           <div style={{ 
             width: 80, 
             height: 80, 
@@ -62,7 +62,7 @@ export const VerifyOtpPage: React.FC = () => {
           }}>
             <LockOutlined style={{ fontSize: 48, color: '#FFFFFF' }} />
           </div>
-          <Space direction="vertical" size={4} align="center">
+          <Space vertical size={4} align="center">
             <Title level={2} style={{ margin: 0, color: '#000000' }}>Verify OTP</Title>
             <Text type="secondary" style={{ fontSize: 14 }}>
               Enter the code sent to your {otpChannel}
@@ -77,10 +77,10 @@ export const VerifyOtpPage: React.FC = () => {
             boxShadow: '0 4px 24px rgba(0, 0, 0, 0.08)'
           }}
         >
-          <Space direction="vertical" size="large" style={{ width: '100%' }}>
+          <Space vertical size="large" style={{ width: '100%' }}>
             {message && (
               <Alert
-                message={message}
+                title={message}
                 type="success"
                 showIcon
               />
@@ -88,7 +88,7 @@ export const VerifyOtpPage: React.FC = () => {
 
             {error && (
               <Alert
-                message={error}
+                title={error}
                 type="error"
                 showIcon
                 closable
@@ -142,7 +142,7 @@ export const VerifyOtpPage: React.FC = () => {
 
             {/* Helper Links */}
             <div style={{ textAlign: 'center' }}>
-              <Space split={<Text type="secondary">•</Text>}>
+              <Space separator={<Text type="secondary">•</Text>}>
                 <Link onClick={handleResendOtp}>Resend OTP</Link>
                 <Link onClick={() => navigate('/login')}>Back to Login</Link>
               </Space>
@@ -152,7 +152,7 @@ export const VerifyOtpPage: React.FC = () => {
 
         {/* Helper Text */}
         <div style={{ marginTop: 24, textAlign: 'center' }}>
-          <Space direction="vertical" size={8}>
+          <Space vertical size={8}>
             <Text type="secondary" style={{ fontSize: 12 }}>
               Check your {otpChannel === 'email' ? 'email inbox' : 'phone messages'} for the OTP code
             </Text>

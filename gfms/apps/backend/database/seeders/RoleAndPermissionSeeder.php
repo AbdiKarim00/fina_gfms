@@ -88,19 +88,20 @@ class RoleAndPermissionSeeder extends Seeder
             'view_reports',
         ]);
 
+        $transportOfficer = Role::create(['name' => 'transport_officer']);
+        $transportOfficer->givePermissionTo([
+            'view_vehicles',
+            'create_bookings',
+            'view_bookings',
+            'view_reports',
+        ]);
+
         $driver = Role::create(['name' => 'driver']);
         $driver->givePermissionTo([
             'view_vehicles',
             'view_bookings',
             'view_maintenance',
             'create_fuel',
-        ]);
-
-        $user = Role::create(['name' => 'user']);
-        $user->givePermissionTo([
-            'view_vehicles',
-            'create_bookings',
-            'view_bookings',
         ]);
 
         $this->command->info('Roles and permissions created successfully!');

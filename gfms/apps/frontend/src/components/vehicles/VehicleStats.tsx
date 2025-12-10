@@ -62,12 +62,12 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicles }) => {
             color: 'white',
           }}
         >
-          <Space direction="vertical" size="small" style={{ width: '100%' }}>
+          <Space vertical size="small" style={{ width: '100%' }}>
             <CarOutlined style={{ fontSize: '32px', color: 'white' }} />
             <Statistic
               title={<Text style={{ color: 'rgba(255,255,255,0.85)' }}>Total Vehicles</Text>}
               value={totalVehicles}
-              valueStyle={{ color: 'white', fontSize: '32px', fontWeight: 'bold' }}
+              styles={{ content: { color: 'white', fontSize: '32px', fontWeight: 'bold' } }}
             />
             <Text style={{ color: 'rgba(255,255,255,0.75)', fontSize: '12px' }}>
               Fleet Size
@@ -79,7 +79,7 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicles }) => {
       {/* Active Vehicles Card with Progress */}
       <Col xs={24} sm={12} lg={6}>
         <Card hoverable style={{ borderRadius: '12px', height: '100%' }}>
-          <Space direction="vertical" size="small" style={{ width: '100%' }}>
+          <Space vertical size="small" style={{ width: '100%' }}>
             <Space>
               <CheckCircleOutlined style={{ fontSize: '24px', color: '#52c41a' }} />
               <Text strong style={{ fontSize: '16px' }}>
@@ -88,7 +88,7 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicles }) => {
             </Space>
             <Statistic
               value={activeVehicles}
-              valueStyle={{ color: '#52c41a', fontSize: '28px', fontWeight: 'bold' }}
+              styles={{ content: { color: '#52c41a', fontSize: '28px', fontWeight: 'bold' } }}
             />
             <div>
               <Progress
@@ -111,7 +111,7 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicles }) => {
       {/* Maintenance Vehicles Card with Progress */}
       <Col xs={24} sm={12} lg={6}>
         <Card hoverable style={{ borderRadius: '12px', height: '100%' }}>
-          <Space direction="vertical" size="small" style={{ width: '100%' }}>
+          <Space vertical size="small" style={{ width: '100%' }}>
             <Space>
               <ToolOutlined style={{ fontSize: '24px', color: '#faad14' }} />
               <Text strong style={{ fontSize: '16px' }}>
@@ -120,7 +120,7 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicles }) => {
             </Space>
             <Statistic
               value={maintenanceVehicles}
-              valueStyle={{ color: '#faad14', fontSize: '28px', fontWeight: 'bold' }}
+              styles={{ content: { color: '#faad14', fontSize: '28px', fontWeight: 'bold' } }}
             />
             <div>
               <Progress
@@ -142,7 +142,7 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicles }) => {
       {/* Inactive Vehicles Card with Progress */}
       <Col xs={24} sm={12} lg={6}>
         <Card hoverable style={{ borderRadius: '12px', height: '100%' }}>
-          <Space direction="vertical" size="small" style={{ width: '100%' }}>
+          <Space vertical size="small" style={{ width: '100%' }}>
             <Space>
               <StopOutlined style={{ fontSize: '24px', color: '#8c8c8c' }} />
               <Text strong style={{ fontSize: '16px' }}>
@@ -151,7 +151,7 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicles }) => {
             </Space>
             <Statistic
               value={inactiveVehicles}
-              valueStyle={{ color: '#8c8c8c', fontSize: '28px', fontWeight: 'bold' }}
+              styles={{ content: { color: '#8c8c8c', fontSize: '28px', fontWeight: 'bold' } }}
             />
             <div>
               <Progress
@@ -179,7 +179,7 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicles }) => {
           }
           style={{ borderRadius: '12px', height: '100%' }}
         >
-          <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+          <Space vertical size="middle" style={{ width: '100%' }}>
             <div>
               <Space style={{ width: '100%', justifyContent: 'space-between' }}>
                 <Text>Diesel</Text>
@@ -244,11 +244,11 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicles }) => {
           }
           style={{ borderRadius: '12px', height: '100%' }}
         >
-          <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+          <Space vertical size="middle" style={{ width: '100%' }}>
             <Statistic
               value={avgMileage.toFixed(0)}
               suffix="km"
-              valueStyle={{ color: '#722ed1', fontSize: '32px', fontWeight: 'bold' }}
+              styles={{ content: { color: '#722ed1', fontSize: '32px', fontWeight: 'bold' } }}
             />
             <div>
               <Text type="secondary" style={{ fontSize: '12px' }}>
@@ -283,11 +283,11 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicles }) => {
           }
           style={{ borderRadius: '12px', height: '100%' }}
         >
-          <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+          <Space vertical size="middle" style={{ width: '100%' }}>
             <Statistic
               value={withLogBook}
               suffix={`/ ${totalVehicles}`}
-              valueStyle={{ color: '#13c2c2', fontSize: '32px', fontWeight: 'bold' }}
+              styles={{ content: { color: '#13c2c2', fontSize: '32px', fontWeight: 'bold' } }}
             />
             <div>
               <Progress

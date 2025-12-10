@@ -12,7 +12,7 @@ const { Title, Text } = Typography;
 export const TransportOfficerDashboard: React.FC = () => {
   return (
     <div style={{ padding: '24px' }}>
-      <Space direction="vertical" size="large" style={{ width: '100%' }}>
+      <Space vertical size="large" style={{ width: '100%' }}>
         <div>
           <Title level={2} style={{ margin: 0 }}>
             Transport Officer Dashboard
@@ -21,7 +21,7 @@ export const TransportOfficerDashboard: React.FC = () => {
         </div>
 
         <Alert
-          message="Transport Officer Access"
+          title="Transport Officer Access"
           description="Book vehicles, view available fleet, and manage your transportation requests."
           type="info"
           showIcon
@@ -34,7 +34,7 @@ export const TransportOfficerDashboard: React.FC = () => {
                 title="My Bookings"
                 value={0}
                 prefix={<FileTextOutlined style={{ color: '#1890ff' }} />}
-                valueStyle={{ color: '#1890ff' }}
+                styles={{ content: { color: '#1890ff' } }}
               />
             </Card>
           </Col>
@@ -45,7 +45,7 @@ export const TransportOfficerDashboard: React.FC = () => {
                 title="Pending Approvals"
                 value={0}
                 prefix={<ClockCircleOutlined style={{ color: '#faad14' }} />}
-                valueStyle={{ color: '#faad14' }}
+                styles={{ content: { color: '#faad14' } }}
               />
             </Card>
           </Col>
@@ -56,7 +56,7 @@ export const TransportOfficerDashboard: React.FC = () => {
                 title="Available Vehicles"
                 value={4}
                 prefix={<CarOutlined style={{ color: '#52c41a' }} />}
-                valueStyle={{ color: '#52c41a' }}
+                styles={{ content: { color: '#52c41a' } }}
               />
             </Card>
           </Col>

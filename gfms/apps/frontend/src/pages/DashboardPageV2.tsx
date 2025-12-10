@@ -10,7 +10,7 @@ export const DashboardPageV2: React.FC = () => {
 
   return (
     <div style={{ padding: '24px' }}>
-      <Space direction="vertical" size="large" style={{ width: '100%' }}>
+      <Space vertical size="large" style={{ width: '100%' }}>
         {/* Header */}
         <div>
           <Title level={2} style={{ margin: 0 }}>Dashboard</Title>
@@ -25,7 +25,7 @@ export const DashboardPageV2: React.FC = () => {
                 title="Total Vehicles"
                 value={2}
                 prefix={<CarOutlined style={{ color: '#006600' }} />}
-                valueStyle={{ color: '#006600' }}
+                styles={{ content: { color: '#006600' } }}
               />
             </Card>
           </Col>
@@ -36,7 +36,7 @@ export const DashboardPageV2: React.FC = () => {
                 title="Active Drivers"
                 value={1}
                 prefix={<UserOutlined style={{ color: '#0D6EFD' }} />}
-                valueStyle={{ color: '#0D6EFD' }}
+                styles={{ content: { color: '#0D6EFD' } }}
               />
             </Card>
           </Col>
@@ -47,7 +47,7 @@ export const DashboardPageV2: React.FC = () => {
                 title="Pending Bookings"
                 value={0}
                 prefix={<FileTextOutlined style={{ color: '#FFC107' }} />}
-                valueStyle={{ color: '#FFC107' }}
+                styles={{ content: { color: '#FFC107' } }}
               />
             </Card>
           </Col>

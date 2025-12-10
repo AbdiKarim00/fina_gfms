@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, Select, InputNumber, Switch, message, Row, Col } from 'antd';
+import { Modal, Form, Input, Select, InputNumber, Switch, message, Row, Col, Alert } from 'antd';
 import { CarOutlined } from '@ant-design/icons';
 import { Vehicle } from '../../types';
 import { apiClient } from '../../services/api';
+import { usePermissions } from '../../hooks/usePermissions';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -22,7 +23,11 @@ export const VehicleFormModal: React.FC<VehicleFormModalProps> = ({
 }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = React.useState(false);
+  const permissions = usePermissions();
   const isEdit = !!vehicle;
+  
+  // Transport Officer can only edit status and notes
+  const isLimitedEdit = permissions.canEditLimitedVehicleFields;
 
   useEffect(() => {
     if (open && vehicle) {
@@ -78,6 +83,16 @@ export const VehicleFormModal: React.FC<VehicleFormModalProps> = ({
       okText={isEdit ? 'Update' : 'Add'}
       cancelText="Cancel"
     >
+      {isLimitedEdit && (
+        <Alert
+          title="Limited Edit Access"
+          description="As a Transport Officer, you can only edit Status and Notes fields. Other fields are read-only."
+          type="info"
+          showIcon
+          style={{ marginBottom: 16 }}
+        />
+      )}
+      
       <Form
         form={form}
         layout="vertical"
@@ -99,7 +114,7 @@ export const VehicleFormModal: React.FC<VehicleFormModalProps> = ({
                 { max: 15, message: 'Registration number must not exceed 15 characters' },
               ]}
             >
-              <Input placeholder="e.g., GKB 671S" />
+              <Input placeholder="e.g., GKB 671S" disabled={isLimitedEdit} />
             </Form.Item>
           </Col>
 
@@ -129,7 +144,7 @@ export const VehicleFormModal: React.FC<VehicleFormModalProps> = ({
                 { min: 2, message: 'Make must be at least 2 characters' },
               ]}
             >
-              <Input placeholder="e.g., Toyota, Nissan, Land Rover" />
+              <Input placeholder="e.g., Toyota, Nissan, Land Rover" disabled={isLimitedEdit} />
             </Form.Item>
           </Col>
 
@@ -142,7 +157,7 @@ export const VehicleFormModal: React.FC<VehicleFormModalProps> = ({
                 { min: 2, message: 'Model must be at least 2 characters' },
               ]}
             >
-              <Input placeholder="e.g., Land Cruiser, Prado, X-Trail" />
+              <Input placeholder="e.g., Land Cruiser, Prado, X-Trail" disabled={isLimitedEdit} />
             </Form.Item>
           </Col>
         </Row>
@@ -158,7 +173,7 @@ export const VehicleFormModal: React.FC<VehicleFormModalProps> = ({
                 { type: 'number', max: currentYear + 1, message: `Year cannot exceed ${currentYear + 1}` },
               ]}
             >
-              <InputNumber style={{ width: '100%' }} placeholder="e.g., 2020" />
+              <InputNumber style={{ width: '100%' }} placeholder="e.g., 2020" disabled={isLimitedEdit} />
             </Form.Item>
           </Col>
 
@@ -168,7 +183,7 @@ export const VehicleFormModal: React.FC<VehicleFormModalProps> = ({
               label="Fuel Type"
               rules={[{ required: true, message: 'Please select fuel type' }]}
             >
-              <Select>
+              <Select disabled={isLimitedEdit}>
                 <Option value="petrol">Petrol</Option>
                 <Option value="diesel">Diesel</Option>
                 <Option value="electric">Electric</Option>
@@ -179,7 +194,7 @@ export const VehicleFormModal: React.FC<VehicleFormModalProps> = ({
 
           <Col span={8}>
             <Form.Item name="color" label="Color">
-              <Input placeholder="e.g., White, Black" />
+              <Input placeholder="e.g., White, Black" disabled={isLimitedEdit} />
             </Form.Item>
           </Col>
         </Row>
@@ -187,13 +202,13 @@ export const VehicleFormModal: React.FC<VehicleFormModalProps> = ({
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item name="engine_number" label="Engine Number">
-              <Input placeholder="e.g., 1HZ-0879638" />
+              <Input placeholder="e.g., 1HZ-0879638" disabled={isLimitedEdit} />
             </Form.Item>
           </Col>
 
           <Col span={12}>
             <Form.Item name="chassis_number" label="Chassis Number">
-              <Input placeholder="e.g., JTELB71J50-7726026" />
+              <Input placeholder="e.g., JTELB71J50-7726026" disabled={isLimitedEdit} />
             </Form.Item>
           </Col>
         </Row>
@@ -208,7 +223,7 @@ export const VehicleFormModal: React.FC<VehicleFormModalProps> = ({
                 { type: 'number', max: 1000000, message: 'Mileage seems too high' },
               ]}
             >
-              <InputNumber style={{ width: '100%' }} placeholder="e.g., 50000" />
+              <InputNumber style={{ width: '100%' }} placeholder="e.g., 50000" disabled={isLimitedEdit} />
             </Form.Item>
           </Col>
 
@@ -221,7 +236,7 @@ export const VehicleFormModal: React.FC<VehicleFormModalProps> = ({
                 { type: 'number', max: 100, message: 'Capacity cannot exceed 100' },
               ]}
             >
-              <InputNumber style={{ width: '100%' }} placeholder="e.g., 5" />
+              <InputNumber style={{ width: '100%' }} placeholder="e.g., 5" disabled={isLimitedEdit} />
             </Form.Item>
           </Col>
 
@@ -232,6 +247,7 @@ export const VehicleFormModal: React.FC<VehicleFormModalProps> = ({
                 placeholder="e.g., 2020"
                 min={1990}
                 max={currentYear}
+                disabled={isLimitedEdit}
               />
             </Form.Item>
           </Col>
@@ -240,19 +256,19 @@ export const VehicleFormModal: React.FC<VehicleFormModalProps> = ({
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item name="current_location" label="Current Location">
-              <Input placeholder="e.g., POOL, CS OFFICE" />
+              <Input placeholder="e.g., POOL, CS OFFICE" disabled={isLimitedEdit} />
             </Form.Item>
           </Col>
 
           <Col span={12}>
             <Form.Item name="responsible_officer" label="Responsible Officer">
-              <Input placeholder="e.g., MULEI, Director RMD" />
+              <Input placeholder="e.g., MULEI, Director RMD" disabled={isLimitedEdit} />
             </Form.Item>
           </Col>
         </Row>
 
         <Form.Item name="has_log_book" label="Has Log Book" valuePropName="checked">
-          <Switch checkedChildren="YES" unCheckedChildren="NO" />
+          <Switch checkedChildren="YES" unCheckedChildren="NO" disabled={isLimitedEdit} />
         </Form.Item>
 
         <Form.Item name="notes" label="Notes">

@@ -54,9 +54,9 @@ export const VehicleDeleteModal: React.FC<VehicleDeleteModalProps> = ({
       cancelText="Cancel"
       okButtonProps={{ danger: true }}
     >
-      <Space direction="vertical" size="large" style={{ width: '100%' }}>
+      <Space vertical size="large" style={{ width: '100%' }}>
         <Alert
-          message="Warning"
+          title="Warning"
           description="This action cannot be undone. The vehicle will be permanently deleted from the system."
           type="warning"
           showIcon
@@ -67,7 +67,7 @@ export const VehicleDeleteModal: React.FC<VehicleDeleteModalProps> = ({
             Are you sure you want to delete the following vehicle?
           </Paragraph>
 
-          <Space direction="vertical" style={{ width: '100%' }}>
+          <Space vertical style={{ width: '100%' }}>
             <Space>
               <CarOutlined style={{ color: '#006600' }} />
               <Text strong>Registration:</Text>

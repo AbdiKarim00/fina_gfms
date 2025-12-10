@@ -12,7 +12,7 @@ const { Title, Text } = Typography;
 export const SuperAdminDashboard: React.FC = () => {
   return (
     <div style={{ padding: '24px' }}>
-      <Space direction="vertical" size="large" style={{ width: '100%' }}>
+      <Space vertical size="large" style={{ width: '100%' }}>
         <div>
           <Title level={2} style={{ margin: 0 }}>
             Super Admin Dashboard
@@ -21,7 +21,7 @@ export const SuperAdminDashboard: React.FC = () => {
         </div>
 
         <Alert
-          message="Super Admin Access"
+          title="Super Admin Access"
           description="You have full system access. Use this dashboard to manage users, organizations, roles, and system settings."
           type="info"
           showIcon
@@ -34,7 +34,7 @@ export const SuperAdminDashboard: React.FC = () => {
                 title="Total Users"
                 value={5}
                 prefix={<TeamOutlined style={{ color: '#1890ff' }} />}
-                valueStyle={{ color: '#1890ff' }}
+                styles={{ content: { color: '#1890ff' } }}
               />
             </Card>
           </Col>
@@ -45,7 +45,7 @@ export const SuperAdminDashboard: React.FC = () => {
                 title="Organizations"
                 value={3}
                 prefix={<AuditOutlined style={{ color: '#722ed1' }} />}
-                valueStyle={{ color: '#722ed1' }}
+                styles={{ content: { color: '#722ed1' } }}
               />
             </Card>
           </Col>
@@ -56,7 +56,7 @@ export const SuperAdminDashboard: React.FC = () => {
                 title="Total Vehicles"
                 value={6}
                 prefix={<CarOutlined style={{ color: '#006600' }} />}
-                valueStyle={{ color: '#006600' }}
+                styles={{ content: { color: '#006600' } }}
               />
             </Card>
           </Col>
@@ -67,7 +67,7 @@ export const SuperAdminDashboard: React.FC = () => {
                 title="Roles"
                 value={5}
                 prefix={<SafetyOutlined style={{ color: '#fa8c16' }} />}
-                valueStyle={{ color: '#fa8c16' }}
+                styles={{ content: { color: '#fa8c16' } }}
               />
             </Card>
           </Col>

@@ -32,6 +32,14 @@ class RolePermissionSeeder extends Seeder
             'delete_drivers',
             'assign_drivers',
             
+            // Booking Management
+            'view_bookings',
+            'create_bookings',
+            'edit_bookings',
+            'delete_bookings',
+            'approve_bookings',
+            'cancel_bookings',
+            
             // Trip Management
             'view_trips',
             'create_trips',
@@ -84,9 +92,16 @@ class RolePermissionSeeder extends Seeder
             'manage_system',
         ];
 
-        // Create all permissions
+        // Create all permissions for both web and sanctum guards
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission, 'guard_name' => 'web']);
+            // Web guard (for session-based auth)
+            Permission::firstOrCreate(
+                ['name' => $permission, 'guard_name' => 'web']
+            );
+            // Sanctum guard (for API token auth)
+            Permission::firstOrCreate(
+                ['name' => $permission, 'guard_name' => 'sanctum']
+            );
         }
 
         // Define roles and their permissions
@@ -96,6 +111,7 @@ class RolePermissionSeeder extends Seeder
             'Admin' => [
                 'view_vehicles', 'create_vehicles', 'edit_vehicles', 'delete_vehicles', 'assign_vehicles',
                 'view_drivers', 'create_drivers', 'edit_drivers', 'delete_drivers', 'assign_drivers',
+                'view_bookings', 'create_bookings', 'edit_bookings', 'delete_bookings', 'approve_bookings', 'cancel_bookings',
                 'view_trips', 'create_trips', 'edit_trips', 'delete_trips', 'approve_trips',
                 'view_maintenance', 'create_maintenance', 'edit_maintenance', 'delete_maintenance', 'approve_maintenance',
                 'view_fuel', 'create_fuel', 'edit_fuel', 'delete_fuel', 'approve_fuel',
@@ -109,6 +125,7 @@ class RolePermissionSeeder extends Seeder
             'Fleet Manager' => [
                 'view_vehicles', 'create_vehicles', 'edit_vehicles', 'assign_vehicles',
                 'view_drivers', 'create_drivers', 'edit_drivers', 'assign_drivers',
+                'view_bookings', 'approve_bookings', 'cancel_bookings',
                 'view_trips', 'create_trips', 'edit_trips', 'approve_trips',
                 'view_maintenance', 'create_maintenance', 'edit_maintenance', 'approve_maintenance',
                 'view_fuel', 'create_fuel', 'edit_fuel', 'approve_fuel',
@@ -120,6 +137,7 @@ class RolePermissionSeeder extends Seeder
             'Transport Officer' => [
                 'view_vehicles', 'edit_vehicles',
                 'view_drivers', 'edit_drivers',
+                'view_bookings', 'create_bookings', 'edit_bookings', 'cancel_bookings',
                 'view_trips', 'create_trips', 'edit_trips',
                 'view_maintenance', 'create_maintenance',
                 'view_fuel', 'create_fuel',
@@ -138,6 +156,7 @@ class RolePermissionSeeder extends Seeder
             
             'Driver' => [
                 'view_vehicles',
+                'view_bookings',
                 'view_trips',
                 'view_maintenance',
                 'view_fuel', 'create_fuel',
@@ -162,10 +181,15 @@ class RolePermissionSeeder extends Seeder
             ],
         ];
 
-        // Create roles and assign permissions
+        // Create roles and assign permissions for both guards
         foreach ($roles as $roleName => $rolePermissions) {
-            $role = Role::create(['name' => $roleName, 'guard_name' => 'web']);
-            $role->givePermissionTo($rolePermissions);
+            // Web guard role
+            $webRole = Role::firstOrCreate(['name' => $roleName, 'guard_name' => 'web']);
+            $webRole->syncPermissions($rolePermissions);
+            
+            // Sanctum guard role
+            $sanctumRole = Role::firstOrCreate(['name' => $roleName, 'guard_name' => 'sanctum']);
+            $sanctumRole->syncPermissions($rolePermissions);
         }
 
         $this->command->info('✓ Roles and permissions created successfully!');
