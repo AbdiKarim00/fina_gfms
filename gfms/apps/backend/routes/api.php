@@ -77,6 +77,69 @@ Route::prefix('v1')->group(function () {
                 'destroy' => 'permission:delete_vehicles',
             ]);
 
+        // Booking routes with permission-based access
+        Route::prefix('bookings')->group(function () {
+            // My bookings (Transport Officer, Driver)
+            Route::get('/my-bookings', [App\Http\Controllers\BookingController::class, 'myBookings'])
+                ->middleware('permission:view_bookings');
+            
+            // Pending approvals (Fleet Manager, Admin)
+            Route::get('/pending', [App\Http\Controllers\BookingController::class, 'pending'])
+                ->middleware('permission:approve_bookings');
+            
+            // Calendar view
+            Route::get('/calendar', [App\Http\Controllers\BookingController::class, 'calendar'])
+                ->middleware('permission:view_bookings');
+            
+            // Check conflicts
+            Route::post('/check-conflicts', [App\Http\Controllers\BookingController::class, 'checkConflicts'])
+                ->middleware('permission:view_bookings');
+            
+            // Available vehicles
+            Route::post('/available-vehicles', [App\Http\Controllers\BookingController::class, 'availableVehicles'])
+                ->middleware('permission:view_bookings');
+            
+            // Statistics
+            Route::get('/statistics', [App\Http\Controllers\BookingController::class, 'statistics'])
+                ->middleware('permission:view_bookings');
+            
+            // Bulk approve
+            Route::post('/bulk-approve', [App\Http\Controllers\BookingController::class, 'bulkApprove'])
+                ->middleware('permission:approve_bookings');
+            
+            // Approve/Reject specific booking
+            Route::post('/{booking}/approve', [App\Http\Controllers\BookingController::class, 'approve'])
+                ->middleware('permission:approve_bookings');
+            Route::post('/{booking}/reject', [App\Http\Controllers\BookingController::class, 'reject'])
+                ->middleware('permission:approve_bookings');
+            Route::post('/{booking}/cancel', [App\Http\Controllers\BookingController::class, 'cancel'])
+                ->middleware('permission:view_bookings');
+        });
+
+        // RESTful booking routes - index and show
+        Route::get('/bookings', [App\Http\Controllers\BookingController::class, 'index'])
+            ->middleware('permission:view_bookings');
+        Route::get('/bookings/{booking}', [App\Http\Controllers\BookingController::class, 'show'])
+            ->middleware('permission:view_bookings');
+        Route::post('/bookings', [App\Http\Controllers\BookingController::class, 'store'])
+            ->middleware('permission:create_bookings');
+        Route::put('/bookings/{booking}', [App\Http\Controllers\BookingController::class, 'update'])
+            ->middleware('permission:create_bookings');
+        Route::delete('/bookings/{booking}', [App\Http\Controllers\BookingController::class, 'destroy'])
+            ->middleware('permission:create_bookings');
+
+        // Conflict Resolution routes
+        Route::prefix('conflict-resolution')->group(function () {
+            Route::post('/suggestions', [App\Http\Controllers\ConflictResolutionController::class, 'getSuggestions'])
+                ->middleware('permission:view_bookings');
+            Route::post('/alternative-vehicles', [App\Http\Controllers\ConflictResolutionController::class, 'getAlternativeVehicles'])
+                ->middleware('permission:view_bookings');
+            Route::post('/alternative-times', [App\Http\Controllers\ConflictResolutionController::class, 'getAlternativeTimeSlots'])
+                ->middleware('permission:view_bookings');
+            Route::post('/alternative-drivers', [App\Http\Controllers\ConflictResolutionController::class, 'getAlternativeDrivers'])
+                ->middleware('permission:view_bookings');
+        });
+
         // Example: Role-based routes
         Route::middleware('role:Admin')->group(function () {
             Route::get('/admin/dashboard', function () {

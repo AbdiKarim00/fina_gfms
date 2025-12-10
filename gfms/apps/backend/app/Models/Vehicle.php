@@ -92,6 +92,30 @@ class Vehicle extends Model
     }
 
     /**
+     * Get the maintenance schedules for the vehicle.
+     */
+    public function maintenanceSchedules()
+    {
+        return $this->hasMany(MaintenanceSchedule::class);
+    }
+
+    /**
+     * Get active maintenance schedules for the vehicle.
+     */
+    public function activeMaintenance()
+    {
+        return $this->hasMany(MaintenanceSchedule::class)->active();
+    }
+
+    /**
+     * Get bookings for this vehicle.
+     */
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    /**
      * Scope a query to only include active vehicles.
      */
     public function scopeActive($query)

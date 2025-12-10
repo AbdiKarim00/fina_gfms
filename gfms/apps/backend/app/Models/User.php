@@ -48,6 +48,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Get bookings where this user is the driver.
+     */
+    public function driverBookings()
+    {
+        return $this->hasMany(Booking::class, 'driver_id');
+    }
+
+    /**
+     * Get driver schedules for this user.
+     */
+    public function driverSchedules()
+    {
+        return $this->hasMany(DriverSchedule::class, 'driver_id');
+    }
+
+    /**
      * Check if the account is currently locked
      */
     public function isLocked(): bool
