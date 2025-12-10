@@ -1,15 +1,23 @@
 # Dependencies
 node_modules/
+/node_modules/
+**/node_modules/
 /vendor/
+**/vendor/
 /.pnp
 .pnp.js
 
 # Testing
 /coverage
+**/coverage/
 
-# Production
+# Production builds and distributions
 /build
 /dist
+**/build/
+**/dist/
+apps/frontend/dist/
+apps/backend/public/build/
 
 # Environment files
 .env
@@ -38,6 +46,15 @@ bootstrap/cache/
 storage/*.key
 public/storage
 public/hot
+apps/backend/bootstrap/cache/
+apps/backend/storage/app/
+apps/backend/storage/framework/cache/
+apps/backend/storage/framework/sessions/
+apps/backend/storage/framework/views/
+apps/backend/storage/logs/
+apps/backend/vendor/
+apps/backend/public/storage
+apps/backend/public/hot
 
 # Flutter specific
 .dart_tool/
@@ -65,3 +82,57 @@ public/hot
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Package manager files
+package-lock.json
+yarn.lock
+composer.lock
+
+# Compiled assets and maps
+*.js.map
+*.css.map
+
+# Cache directories
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary folders
+tmp/
+temp/
+
+# Backup files
+*.bak
+*.backup
+*.orig
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+# Compiled binaries
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
+# Large media files (optional - uncomment if needed)
+# *.mp4
+# *.avi
+# *.mov
+# *.wmv
+# *.flv
+# *.webm
