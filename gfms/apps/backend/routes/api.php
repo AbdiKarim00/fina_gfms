@@ -40,7 +40,7 @@ Route::prefix('v1')->group(function () {
     });
 
     // Authentication routes (public) with rate limiting
-    Route::middleware('throttle:5,15')->group(function () {
+    Route::middleware('throttle:20,1')->group(function () {
         Route::post('/auth/login', [App\Http\Controllers\AuthController::class, 'login']);
         Route::post('/auth/verify-otp', [App\Http\Controllers\AuthController::class, 'verifyOtp']);
     });

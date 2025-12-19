@@ -27,7 +27,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
     /**
      * Find a record by ID
      */
-    public function find(int $id)
+    public function find(string $id)
     {
         return $this->getModel()::find($id);
     }
@@ -35,7 +35,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
     /**
      * Find a record by ID with relationships
      */
-    public function findWith(array $relations, int $id)
+    public function findWith(array $relations, string $id)
     {
         return $this->getModel()::with($relations)->find($id);
     }
@@ -67,7 +67,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
     /**
      * Update an existing record
      */
-    public function update(int $id, array $data)
+    public function update(string $id, array $data)
     {
         $record = $this->find($id);
         if ($record) {
@@ -82,7 +82,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
     /**
      * Delete a record
      */
-    public function delete(int $id): bool
+    public function delete(string $id): bool
     {
         $record = $this->find($id);
         if ($record) {

@@ -31,7 +31,7 @@ export interface LoginResponse {
   success: boolean;
   message: string;
   data: {
-    user_id: number;
+    user_id: string;
     otp_channel: 'email' | 'sms';
   };
 }

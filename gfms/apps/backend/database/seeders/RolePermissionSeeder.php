@@ -39,10 +39,10 @@ class RolePermissionSeeder extends Seeder
         }
 
         // Create Roles and assign permissions
-        $admin = Role::create(['name' => 'Admin', 'guard_name' => 'web']);
+        $admin = Role::create(['name' => 'admin', 'guard_name' => 'web']);
         $admin->givePermissionTo(Permission::all());
 
-        $cabinetSecretary = Role::create(['name' => 'Cabinet Secretary', 'guard_name' => 'web']);
+        $cabinetSecretary = Role::create(['name' => 'cabinet_secretary', 'guard_name' => 'web']);
         $cabinetSecretary->givePermissionTo([
             'view dashboard',
             'view reports',
@@ -53,10 +53,10 @@ class RolePermissionSeeder extends Seeder
             'access_strategic_dashboards'
         ]);
 
-        $manager = Role::create(['name' => 'Manager', 'guard_name' => 'web']);
+        $manager = Role::create(['name' => 'fleet_manager', 'guard_name' => 'web']);
         $manager->givePermissionTo(['view dashboard', 'manage fleet', 'view reports']);
 
-        $driver = Role::create(['name' => 'Driver', 'guard_name' => 'web']);
+        $driver = Role::create(['name' => 'authorized_driver', 'guard_name' => 'web']);
         $driver->givePermissionTo(['view dashboard']);
     }
 }

@@ -5,8 +5,8 @@ import { apiClient } from '../services/api';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (credentials: LoginCredentials) => Promise<{ user_id: number; otp_channel: string; message: string }>;
-  verifyOtp: (userId: number, code: string, otpChannel?: string) => Promise<void>;
+  login: (credentials: LoginCredentials) => Promise<{ user_id: string; otp_channel: string; message: string }>;
+  verifyOtp: (userId: string, code: string, otpChannel?: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -44,7 +44,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
   };
 
-  const verifyOtp = async (userId: number, code: string, otpChannel: string = 'email') => {
+  const verifyOtp = async (userId: string, code: string, otpChannel: string = 'email') => {
     const response = await apiClient.post<VerifyOtpResponse>('/auth/verify-otp', {
       user_id: userId,
       code,

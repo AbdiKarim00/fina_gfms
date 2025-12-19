@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Table, Typography, Progress, Space } from 'antd';
+import { Card, Table, Typography, Progress } from 'antd';
 import { PolicyComplianceData } from '../services/CabinetSecretaryService';
 
 const { Title, Text } = Typography;

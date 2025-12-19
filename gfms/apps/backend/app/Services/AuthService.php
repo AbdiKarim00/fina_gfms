@@ -145,7 +145,7 @@ class AuthService implements AuthenticationServiceInterface
     /**
      * Verify OTP and issue authentication token
      */
-    public function verifyOtp(int $userId, string $code, string $otpChannel = 'email'): array
+    public function verifyOtp(string $userId, string $code, string $otpChannel = 'email'): array
     {
         $user = $this->userRepository->findWithRolesAndPermissions($userId);
 

@@ -35,7 +35,7 @@ class UserRepository extends BaseRepository
     /**
      * Find user by ID with roles and permissions loaded
      */
-    public function findWithRolesAndPermissions(int $id)
+    public function findWithRolesAndPermissions(string $id)
     {
         return $this->findWith(['roles.permissions', 'organization'], $id);
     }

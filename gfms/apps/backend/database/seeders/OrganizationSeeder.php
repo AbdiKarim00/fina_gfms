@@ -17,23 +17,29 @@ class OrganizationSeeder extends Seeder
             'id' => (string) Str::uuid(),
             'name' => 'Ministry of Transport',
             'code' => 'MOT',
-            'type' => 'MINISTRY',
+            'type' => 'ministry',
+            'is_active' => true,
+            'hierarchical_order' => 1,
         ]);
 
         Organization::create([
             'id' => (string) Str::uuid(),
             'name' => 'Department of Roads',
             'code' => 'DOR',
-            'type' => 'DEPARTMENT',
+            'type' => 'department',
             'parent_id' => $root->id,
+            'is_active' => true,
+            'hierarchical_order' => 2,
         ]);
 
         Organization::create([
             'id' => (string) Str::uuid(),
             'name' => 'Traffic Management Unit',
             'code' => 'TMU',
-            'type' => 'UNIT',
+            'type' => 'unit',
             'parent_id' => $root->id,
+            'is_active' => true,
+            'hierarchical_order' => 3,
         ]);
     }
 }

@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
             'organization_id' => $org->id,
             'email_verified_at' => now(),
         ]);
-        $admin->assignRole('Admin');
+        $admin->assignRole('admin');
 
         // Create Cabinet Secretary User
         $cabinetSecretary = User::create([
@@ -40,7 +40,7 @@ class UserSeeder extends Seeder
             'organization_id' => $org->id,
             'email_verified_at' => now(),
         ]);
-        $cabinetSecretary->assignRole('Cabinet Secretary');
+        $cabinetSecretary->assignRole('cabinet_secretary');
 
         // Create Manager User
         $manager = User::create([
@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
             'organization_id' => $org->id,
             'email_verified_at' => now(),
         ]);
-        $manager->assignRole('Manager');
+        $manager->assignRole('fleet_manager');
 
         // Create Driver User
         $driver = User::create([
@@ -64,6 +64,6 @@ class UserSeeder extends Seeder
             'organization_id' => $org->id,
             'email_verified_at' => now(),
         ]);
-        $driver->assignRole('Driver');
+        $driver->assignRole('authorized_driver');
     }
 }

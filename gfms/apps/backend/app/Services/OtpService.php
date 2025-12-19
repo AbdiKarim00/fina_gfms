@@ -97,7 +97,7 @@ class OtpService
     /**
      * Get Redis key for OTP storage
      */
-    private function getRedisKey(int $userId, string $channel): string
+    private function getRedisKey(string $userId, string $channel): string
     {
         return "otp:{$channel}:{$userId}";
     }
@@ -105,7 +105,7 @@ class OtpService
     /**
      * Get Redis key for attempts counter
      */
-    private function getAttemptsKey(int $userId, string $channel): string
+    private function getAttemptsKey(string $userId, string $channel): string
     {
         return "otp_attempts:{$channel}:{$userId}";
     }

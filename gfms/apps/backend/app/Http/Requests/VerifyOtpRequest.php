@@ -22,7 +22,7 @@ class VerifyOtpRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'integer', 'exists:users,id'],
+            'user_id' => ['required', 'string', 'exists:users,id'],
             'code' => ['required', 'string', 'digits:6'],
             'otp_channel' => ['sometimes', 'string', 'in:email,sms'],
         ];

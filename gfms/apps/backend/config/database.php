@@ -17,7 +17,7 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            'search_path' => 'public',
+            'search_path' => 'auth,public',
             'sslmode' => 'prefer',
             'schema' => 'public',
         ],
