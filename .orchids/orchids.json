@@ -1,0 +1,8 @@
+{
+  "projectId": "ef7076b3-9c79-4031-ab6a-5c47c25f63a5",
+  "createdAt": 1734617234,
+  "startupCommands": [
+    "cd gfms/apps/frontend && bun run dev",
+    "cd gfms/apps/backend && php artisan serve --port=8001"
+  ]
+}
