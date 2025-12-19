@@ -92,5 +92,13 @@ Route::prefix('v1')->group(function () {
                 ]);
             });
         });
+
+        // Cabinet Secretary routes
+        Route::middleware('role:Cabinet Secretary')->prefix('cabinet-secretary')->group(function () {
+            Route::get('/policy-compliance', [App\Http\Controllers\CabinetSecretaryController::class, 'getPolicyCompliance']);
+            Route::get('/budget-oversight', [App\Http\Controllers\CabinetSecretaryController::class, 'getBudgetOversight']);
+            Route::post('/interventions', [App\Http\Controllers\CabinetSecretaryController::class, 'postInterventions']);
+            Route::get('/strategic-performance', [App\Http\Controllers\CabinetSecretaryController::class, 'getStrategicPerformance']);
+        });
     });
 });

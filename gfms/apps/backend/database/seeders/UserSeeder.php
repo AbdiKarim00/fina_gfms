@@ -30,6 +30,18 @@ class UserSeeder extends Seeder
         ]);
         $admin->assignRole('Admin');
 
+        // Create Cabinet Secretary User
+        $cabinetSecretary = User::create([
+            'id' => (string) Str::uuid(),
+            'personal_number' => 'CS001',
+            'name' => 'Cabinet Secretary',
+            'email' => 'cabinet.secretary@gfms.gov.ls',
+            'password' => Hash::make('password'),
+            'organization_id' => $org->id,
+            'email_verified_at' => now(),
+        ]);
+        $cabinetSecretary->assignRole('Cabinet Secretary');
+
         // Create Manager User
         $manager = User::create([
             'id' => (string) Str::uuid(),

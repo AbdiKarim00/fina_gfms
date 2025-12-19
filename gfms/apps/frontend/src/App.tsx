@@ -8,6 +8,7 @@ import { LoginPage } from './pages/LoginPage';
 import { VerifyOtpPage } from './pages/VerifyOtpPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { VehiclesPage } from './pages/VehiclesPage';
+import { CabinetSecretaryPage } from './pages/CabinetSecretaryPage';
 import { antdTheme } from './theme/antd-theme';
 
 const App: React.FC = () => {
@@ -29,6 +30,7 @@ const App: React.FC = () => {
               <Route index element={<Navigate to="/dashboard" replace />} />
               <Route path="dashboard" element={<DashboardPage />} />
               <Route path="vehicles" element={<VehiclesPage />} />
+              <Route path="cabinet-secretary" element={<CabinetSecretaryPage />} />
             </Route>
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>

@@ -27,6 +27,11 @@ class RolePermissionSeeder extends Seeder
             'manage users',
             'manage fleet',
             'view reports',
+            'view_policy_compliance',
+            'monitor_budget_execution',
+            'audit_user_accounts',
+            'intervene_in_workflows',
+            'access_strategic_dashboards',
         ];
 
         foreach ($permissions as $permission) {
@@ -36,6 +41,17 @@ class RolePermissionSeeder extends Seeder
         // Create Roles and assign permissions
         $admin = Role::create(['name' => 'Admin', 'guard_name' => 'web']);
         $admin->givePermissionTo(Permission::all());
+
+        $cabinetSecretary = Role::create(['name' => 'Cabinet Secretary', 'guard_name' => 'web']);
+        $cabinetSecretary->givePermissionTo([
+            'view dashboard',
+            'view reports',
+            'view_policy_compliance',
+            'monitor_budget_execution',
+            'audit_user_accounts',
+            'intervene_in_workflows',
+            'access_strategic_dashboards'
+        ]);
 
         $manager = Role::create(['name' => 'Manager', 'guard_name' => 'web']);
         $manager->givePermissionTo(['view dashboard', 'manage fleet', 'view reports']);
