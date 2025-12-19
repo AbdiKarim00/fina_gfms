@@ -15,6 +15,28 @@ return new class extends Migration
         // Create fleet schema
         DB::statement('CREATE SCHEMA IF NOT EXISTS fleet');
         
+        // Create drivers table in fleet schema
+        Schema::create('fleet.drivers', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('personal_number')->unique();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('phone');
+            $table->string('license_number')->unique();
+            $table->date('license_expiry_date');
+            $table->string('license_class');
+            $table->uuid('organization_id');
+            $table->string('status'); // active, suspended, retired
+            $table->text('remarks')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+            
+            $table->foreign('organization_id')
+                  ->references('id')
+                  ->on('auth.organizations')
+                  ->onDelete('cascade');
+        });
+        
         // Create vehicles table in fleet schema
         Schema::create('fleet.vehicles', function (Blueprint $table) {
             $table->uuid('id')->primary();
@@ -36,7 +58,7 @@ return new class extends Migration
             $table->decimal('purchase_price', 15, 2);
             $table->string('procurement_method');
             $table->text('description')->nullable();
-            $table->string('location')->nullable(); // Will store coordinates as string for now
+            $table->geometry('location', 4326)->nullable(); // PostGIS geometry column
             $table->timestamps();
             $table->softDeletes();
             
@@ -49,28 +71,6 @@ return new class extends Migration
                   ->references('id')
                   ->on('fleet.drivers')
                   ->onDelete('set null');
-        });
-        
-        // Create drivers table in fleet schema
-        Schema::create('fleet.drivers', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('personal_number')->unique();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('phone');
-            $table->string('license_number')->unique();
-            $table->date('license_expiry_date');
-            $table->string('license_class');
-            $table->uuid('organization_id');
-            $table->string('status'); // active, suspended, retired
-            $table->text('remarks')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
-            
-            $table->foreign('organization_id')
-                  ->references('id')
-                  ->on('auth.organizations')
-                  ->onDelete('cascade');
         });
         
         // Create vehicle assignments table in fleet schema
@@ -160,8 +160,8 @@ return new class extends Migration
         Schema::dropIfExists('fleet.disposal_requests');
         Schema::dropIfExists('fleet.vehicle_documents');
         Schema::dropIfExists('fleet.vehicle_assignments');
-        Schema::dropIfExists('fleet.drivers');
         Schema::dropIfExists('fleet.vehicles');
+        Schema::dropIfExists('fleet.drivers');
         DB::statement('DROP SCHEMA IF EXISTS fleet CASCADE');
     }
 };;
