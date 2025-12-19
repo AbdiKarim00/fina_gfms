@@ -1,0 +1,21 @@
+
+  Dropping all tables .......................................... 129.26ms DONE
+
+   INFO  Preparing database.  
+
+  Creating migration table ...................................... 97.99ms DONE
+
+   INFO  Running migrations.  
+
+  2025_12_19_101618_create_auth_schema ......................... 360.14ms DONE
+  2025_12_19_101732_create_fleet_schema ........................ 296.20ms DONE
+  2025_12_19_101808_create_tracking_schema ..................... 142.01ms DONE
+  2025_12_19_101858_create_maintenance_schema .................. 147.41ms DONE
+  2025_12_19_101931_create_finance_schema ...................... 321.62ms DONE
+  2025_12_19_102015_create_integrations_schema ................. 114.15ms DONE
+  2025_12_19_102058_create_audit_schema ......................... 96.49ms DONE
+  2025_12_19_102526_create_permission_tables ................... 134.65ms DONE
+  2025_12_19_102614_create_activity_log_table ................... 32.43ms DONE
+  2025_12_19_102738_create_cache_tables ......................... 31.92ms DONE
+  2025_12_19_103359_create_core_tables ........................... 0.70ms DONE
+

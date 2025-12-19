@@ -19,7 +19,7 @@ return new class extends Migration
         Schema::create('tracking.gps_logs', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('vehicle_id');
-            $table->geometry('location', 4326); // PostGIS geometry point
+            $table->geometry('location'); // PostGIS geometry point
             $table->decimal('speed', 8, 2);
             $table->decimal('heading', 8, 2);
             $table->decimal('altitude', 8, 2);
@@ -41,7 +41,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->geometry('boundary', 4326); // PostGIS geometry polygon
+            $table->geometry('boundary'); // PostGIS geometry polygon
             $table->string('type'); // restricted, authorized, monitoring
             $table->uuid('created_by');
             $table->boolean('is_active')->default(true);
@@ -59,7 +59,7 @@ return new class extends Migration
             $table->uuid('geo_fence_id');
             $table->uuid('vehicle_id');
             $table->uuid('driver_id');
-            $table->geometry('violation_location', 4326); // PostGIS geometry point
+            $table->geometry('violation_location'); // PostGIS geometry point
             $table->timestamp('violated_at');
             $table->text('remarks')->nullable();
             $table->boolean('is_resolved')->default(false);
@@ -93,7 +93,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->geometry('path', 4326); // PostGIS geometry linestring
+            $table->geometry('path'); // PostGIS geometry linestring
             $table->uuid('organization_id');
             $table->uuid('created_by');
             $table->boolean('is_active')->default(true);

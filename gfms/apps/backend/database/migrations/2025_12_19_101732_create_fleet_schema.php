@@ -58,7 +58,7 @@ return new class extends Migration
             $table->decimal('purchase_price', 15, 2);
             $table->string('procurement_method');
             $table->text('description')->nullable();
-            $table->geometry('location', 4326)->nullable(); // PostGIS geometry column
+            $table->geometry('location')->nullable(); // PostGIS geometry column
             $table->timestamps();
             $table->softDeletes();
             
