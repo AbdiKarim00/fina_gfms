@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 // Health check endpoint
 Route::get('/health', function () {
@@ -25,7 +25,7 @@ Route::get('/health', function () {
 
 // API version prefix
 Route::prefix('v1')->group(function () {
-    
+
     // Public routes
     Route::get('/ping', function () {
         return response()->json(['message' => 'pong']);
@@ -44,12 +44,12 @@ Route::prefix('v1')->group(function () {
         Route::post('/auth/login', [App\Http\Controllers\AuthController::class, 'login']);
         Route::post('/auth/verify-otp', [App\Http\Controllers\AuthController::class, 'verifyOtp']);
     });
-    
+
     // Protected routes
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/auth/me', [App\Http\Controllers\AuthController::class, 'me']);
         Route::post('/auth/logout', [App\Http\Controllers\AuthController::class, 'logout']);
-        
+
         Route::get('/user', function (Request $request) {
             return $request->user();
         });

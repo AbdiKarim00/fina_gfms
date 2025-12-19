@@ -7,14 +7,15 @@ use Illuminate\Support\Facades\Log;
 class UnifiedSmsService
 {
     private string $provider;
+
     private $smsService;
 
     public function __construct()
     {
         // Choose provider based on config
         $this->provider = config('services.sms.provider', 'africastalking');
-        
-        $this->smsService = match($this->provider) {
+
+        $this->smsService = match ($this->provider) {
             'twilio' => app(TwilioSmsService::class),
             'africastalking' => app(SmsService::class),
             default => app(SmsService::class),

@@ -16,8 +16,21 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Split vendor chunks
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'ui-vendor': ['antd', '@ant-design/icons'],
+          'utils-vendor': ['lodash', 'dayjs', 'axios'],
+          'form-vendor': ['react-hook-form', 'zod'],
+          'query-vendor': ['@tanstack/react-query'],
+        },
+      },
+    },
   },
   define: {
-    'process.env': process.env,
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    'process.env.VITE_API_BASE_URL': JSON.stringify(process.env.VITE_API_BASE_URL),
   },
 });

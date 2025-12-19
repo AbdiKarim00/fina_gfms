@@ -12,31 +12,31 @@ class DevToolsController extends Controller
      */
     public function getOtps(): JsonResponse
     {
-        if (!config('app.debug')) {
+        if (! config('app.debug')) {
             return response()->json([
-                'error' => 'This endpoint is only available in debug mode'
+                'error' => 'This endpoint is only available in debug mode',
             ], 403);
         }
 
         $otps = [];
-        
+
         // Get all OTP keys from Redis
         $keys = Redis::keys('*otp:*');
-        
+
         foreach ($keys as $key) {
             // Remove the prefix that Laravel adds
             $cleanKey = str_replace(config('database.redis.options.prefix'), '', $key);
-            
+
             // Get the OTP value
             $otp = Redis::get($cleanKey);
-            
+
             // Get TTL (time to live)
             $ttl = Redis::ttl($cleanKey);
-            
+
             // Parse the key to get channel and user_id
             // Format: otp:email:2 or otp:sms:2
             preg_match('/otp:(email|sms):(\d+)/', $cleanKey, $matches);
-            
+
             if (count($matches) === 3) {
                 $otps[] = [
                     'channel' => $matches[1],
@@ -47,7 +47,7 @@ class DevToolsController extends Controller
                 ];
             }
         }
-        
+
         return response()->json([
             'success' => true,
             'count' => count($otps),
@@ -61,9 +61,9 @@ class DevToolsController extends Controller
      */
     public function getUserOtp(int $userId, string $channel = 'email'): JsonResponse
     {
-        if (!config('app.debug')) {
+        if (! config('app.debug')) {
             return response()->json([
-                'error' => 'This endpoint is only available in debug mode'
+                'error' => 'This endpoint is only available in debug mode',
             ], 403);
         }
 
@@ -71,7 +71,7 @@ class DevToolsController extends Controller
         $otp = Redis::get($key);
         $ttl = Redis::ttl($key);
 
-        if (!$otp) {
+        if (! $otp) {
             return response()->json([
                 'success' => false,
                 'message' => 'No OTP found for this user',
@@ -95,15 +95,15 @@ class DevToolsController extends Controller
      */
     public function getSmsLogs(): JsonResponse
     {
-        if (!config('app.debug')) {
+        if (! config('app.debug')) {
             return response()->json([
-                'error' => 'This endpoint is only available in debug mode'
+                'error' => 'This endpoint is only available in debug mode',
             ], 403);
         }
 
         $logFile = storage_path('logs/laravel.log');
-        
-        if (!file_exists($logFile)) {
+
+        if (! file_exists($logFile)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Log file not found',
@@ -116,9 +116,9 @@ class DevToolsController extends Controller
         $file->seek(PHP_INT_MAX);
         $lastLine = $file->key();
         $startLine = max(0, $lastLine - 1000);
-        
+
         $file->seek($startLine);
-        while (!$file->eof()) {
+        while (! $file->eof()) {
             $lines[] = $file->current();
             $file->next();
         }
@@ -143,9 +143,9 @@ class DevToolsController extends Controller
      */
     public function getActivityLogs(): JsonResponse
     {
-        if (!config('app.debug')) {
+        if (! config('app.debug')) {
             return response()->json([
-                'error' => 'This endpoint is only available in debug mode'
+                'error' => 'This endpoint is only available in debug mode',
             ], 403);
         }
 

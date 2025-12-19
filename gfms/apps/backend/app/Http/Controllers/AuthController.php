@@ -8,8 +8,8 @@ use App\Exceptions\InactiveAccountException;
 use App\Exceptions\InvalidOtpException;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\VerifyOtpRequest;
+use App\Http\Responses\ApiResponse;
 use App\Services\AuthService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -22,124 +22,81 @@ class AuthController extends Controller
      * Step 1: Login with personal number and password
      * Sends OTP to user's email or phone
      */
-    public function login(LoginRequest $request): JsonResponse
+    public function login(LoginRequest $request)
     {
         try {
             $otpChannel = $request->input('otp_channel', 'email');
-            
+
             $result = $this->authService->attemptLogin(
                 $request->personal_number,
                 $request->password,
                 $otpChannel
             );
 
-            return response()->json([
-                'success' => true,
-                'message' => $result['message'],
-                'data' => [
-                    'user_id' => $result['user_id'],
-                    'otp_channel' => $result['channel'],
-                ],
-            ], 200);
+            return ApiResponse::success([
+                'user_id' => $result['user_id'],
+                'otp_channel' => $result['channel'],
+            ], $result['message']);
         } catch (AccountLockedException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 423);
+            return ApiResponse::error($e->getMessage(), 423);
         } catch (InactiveAccountException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 403);
+            return ApiResponse::error($e->getMessage(), 403);
         } catch (AuthenticationException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 401);
+            return ApiResponse::error($e->getMessage(), 401);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred during login',
-                'error' => config('app.debug') ? $e->getMessage() : null,
-            ], 500);
+            return ApiResponse::serverError('An error occurred during login');
         }
     }
 
     /**
      * Step 2: Verify OTP and issue authentication token
      */
-    public function verifyOtp(VerifyOtpRequest $request): JsonResponse
+    public function verifyOtp(VerifyOtpRequest $request)
     {
         try {
             $otpChannel = $request->input('otp_channel', 'email');
-            
+
             $result = $this->authService->verifyOtp(
                 $request->user_id,
                 $request->code,
                 $otpChannel
             );
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Login successful',
-                'data' => $result,
-            ], 200);
+            return ApiResponse::success($result, 'Login successful');
         } catch (InvalidOtpException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 400);
+            return ApiResponse::error($e->getMessage(), 400);
         } catch (AuthenticationException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 401);
+            return ApiResponse::error($e->getMessage(), 401);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred during OTP verification',
-                'error' => config('app.debug') ? $e->getMessage() : null,
-            ], 500);
+            return ApiResponse::serverError('An error occurred during OTP verification');
         }
     }
 
     /**
      * Logout user by revoking current token
      */
-    public function logout(Request $request): JsonResponse
+    public function logout(Request $request)
     {
         try {
             $this->authService->logout($request->user());
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Logged out successfully',
-            ], 200);
+            return ApiResponse::success(null, 'Logged out successfully');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred during logout',
-            ], 500);
+            return ApiResponse::serverError('An error occurred during logout');
         }
     }
 
     /**
      * Get authenticated user with roles and permissions
      */
-    public function me(Request $request): JsonResponse
+    public function me(Request $request)
     {
         try {
             $userData = $this->authService->me($request->user());
 
-            return response()->json([
-                'success' => true,
-                'data' => $userData,
-            ], 200);
+            return ApiResponse::success($userData);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred',
-            ], 500);
+            return ApiResponse::serverError('An error occurred');
         }
     }
 }

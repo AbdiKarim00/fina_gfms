@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Spatie\Activitylog\Facades\Activity;
 
 class CheckRole
 {
@@ -16,14 +15,14 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (!$request->user()) {
+        if (! $request->user()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Unauthenticated',
             ], 401);
         }
 
-        if (!$request->user()->hasRole($role)) {
+        if (! $request->user()->hasRole($role)) {
             // Log unauthorized access attempt
             activity()
                 ->causedBy($request->user())
@@ -34,7 +33,7 @@ class CheckRole
                     'ip_address' => $request->ip(),
                 ])
                 ->log('Unauthorized role access attempt');
-            
+
             return response()->json([
                 'success' => false,
                 'message' => 'You do not have the required role to perform this action',

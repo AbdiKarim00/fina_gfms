@@ -18,8 +18,9 @@ class ValidPersonalNumber implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         // Check if it's numeric
-        if (!is_numeric($value)) {
+        if (! is_numeric($value)) {
             $fail('The :attribute must contain only numbers.');
+
             return;
         }
 
@@ -27,12 +28,14 @@ class ValidPersonalNumber implements ValidationRule
         $length = strlen($value);
         if ($length < 6 || $length > 8) {
             $fail('The :attribute must be between 6 and 8 digits.');
+
             return;
         }
 
         // Ensure no leading/trailing spaces
         if ($value !== trim($value)) {
             $fail('The :attribute must not contain spaces.');
+
             return;
         }
     }

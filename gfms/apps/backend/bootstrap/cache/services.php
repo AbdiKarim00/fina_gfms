@@ -48,6 +48,7 @@
     44 => 'Spatie\\Permission\\PermissionServiceProvider',
     45 => 'Spatie\\QueryBuilder\\QueryBuilderServiceProvider',
     46 => 'Spatie\\SignalAwareCommand\\SignalAwareCommandServiceProvider',
+    47 => 'App\\Providers\\ServiceLayerServiceProvider',
   ),
   'eager' => 
   array (
@@ -82,6 +83,7 @@
     28 => 'Spatie\\Permission\\PermissionServiceProvider',
     29 => 'Spatie\\QueryBuilder\\QueryBuilderServiceProvider',
     30 => 'Spatie\\SignalAwareCommand\\SignalAwareCommandServiceProvider',
+    31 => 'App\\Providers\\ServiceLayerServiceProvider',
   ),
   'deferred' => 
   array (

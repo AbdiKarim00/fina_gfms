@@ -8,7 +8,7 @@ export interface User {
   email_verified_at?: string;
   roles?: string[];
   permissions?: string[];
-  organization?: any;
+  organization?: Record<string, unknown>;
   last_login_at?: string;
   created_at?: string;
   updated_at?: string;
@@ -44,7 +44,7 @@ export interface VerifyOtpResponse {
     user: User & {
       roles: string[];
       permissions: string[];
-      organization?: any;
+      organization?: Record<string, unknown>;
     };
   };
 }

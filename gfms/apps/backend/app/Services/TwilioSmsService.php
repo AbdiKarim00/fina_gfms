@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\Log;
 class TwilioSmsService
 {
     private string $accountSid;
+
     private string $authToken;
+
     private string $from;
+
     private bool $enabled;
 
     public function __construct()
@@ -25,8 +28,9 @@ class TwilioSmsService
      */
     public function send(string $phoneNumber, string $message): bool
     {
-        if (!$this->enabled) {
+        if (! $this->enabled) {
             Log::info("SMS (Twilio disabled): To: {$phoneNumber}, Message: {$message}");
+
             return true;
         }
 
@@ -43,7 +47,7 @@ class TwilioSmsService
 
             if ($response->successful()) {
                 $data = $response->json();
-                
+
                 Log::info('Twilio SMS sent successfully', [
                     'phone' => $formattedPhone,
                     'sid' => $data['sid'] ?? null,
@@ -78,22 +82,22 @@ class TwilioSmsService
         $phone = preg_replace('/[\s\-\(\)]/', '', $phone);
 
         if (str_starts_with($phone, '0')) {
-            return '+254' . substr($phone, 1);
+            return '+254'.substr($phone, 1);
         }
 
         if (str_starts_with($phone, '254')) {
-            return '+' . $phone;
+            return '+'.$phone;
         }
 
         if (preg_match('/^[71]/', $phone)) {
-            return '+254' . $phone;
+            return '+254'.$phone;
         }
 
         if (str_starts_with($phone, '+')) {
             return $phone;
         }
 
-        return '+254' . $phone;
+        return '+254'.$phone;
     }
 
     /**
@@ -102,6 +106,7 @@ class TwilioSmsService
     public function sendOtp(string $phoneNumber, string $otp): bool
     {
         $message = "Your GFMS verification code is: {$otp}. Valid for 5 minutes. Do not share this code with anyone.";
+
         return $this->send($phoneNumber, $message);
     }
 

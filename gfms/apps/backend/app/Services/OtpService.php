@@ -10,9 +10,17 @@ use Illuminate\Support\Facades\Redis;
 
 class OtpService
 {
-    private const OTP_EXPIRY_MINUTES = 5;
-    private const MAX_OTP_ATTEMPTS = 3;
     private const OTP_LENGTH = 6;
+
+    private int $otpExpiryMinutes;
+
+    private int $maxOtpAttempts;
+
+    public function __construct()
+    {
+        $this->otpExpiryMinutes = config('gfms.auth.otp_expiry_minutes', 5);
+        $this->maxOtpAttempts = config('gfms.auth.otp_max_attempts', 3);
+    }
 
     /**
      * Generate a 6-digit OTP and store in Redis
@@ -20,16 +28,16 @@ class OtpService
     public function generate(User $user, string $channel = 'email'): string
     {
         $otp = str_pad((string) random_int(0, 999999), self::OTP_LENGTH, '0', STR_PAD_LEFT);
-        
+
         $key = $this->getRedisKey($user->id, $channel);
         $attemptsKey = $this->getAttemptsKey($user->id, $channel);
-        
+
         // Store OTP with expiry
-        Redis::setex($key, self::OTP_EXPIRY_MINUTES * 60, $otp);
-        
+        Redis::setex($key, $this->otpExpiryMinutes * 60, $otp);
+
         // Reset attempts counter
         Redis::del($attemptsKey);
-        
+
         return $otp;
     }
 
@@ -40,32 +48,32 @@ class OtpService
     {
         $key = $this->getRedisKey($user->id, $channel);
         $attemptsKey = $this->getAttemptsKey($user->id, $channel);
-        
+
         // Check if OTP exists
         $storedOtp = Redis::get($key);
-        if (!$storedOtp) {
+        if (! $storedOtp) {
             throw new InvalidOtpException('OTP has expired or does not exist');
         }
-        
+
         // Check attempts
         $attempts = (int) Redis::get($attemptsKey);
-        if ($attempts >= self::MAX_OTP_ATTEMPTS) {
+        if ($attempts >= $this->maxOtpAttempts) {
             Redis::del($key);
             Redis::del($attemptsKey);
             throw new InvalidOtpException('Maximum OTP verification attempts exceeded');
         }
-        
+
         // Verify OTP
         if ($storedOtp !== $code) {
             Redis::incr($attemptsKey);
-            Redis::expire($attemptsKey, self::OTP_EXPIRY_MINUTES * 60);
+            Redis::expire($attemptsKey, $this->otpExpiryMinutes * 60);
             throw new InvalidOtpException('Invalid OTP code');
         }
-        
+
         // OTP is valid, clean up
         Redis::del($key);
         Redis::del($attemptsKey);
-        
+
         return true;
     }
 
@@ -108,6 +116,7 @@ class OtpService
     public function getRemainingTime(User $user, string $channel = 'email'): int
     {
         $key = $this->getRedisKey($user->id, $channel);
+
         return (int) Redis::ttl($key);
     }
 }

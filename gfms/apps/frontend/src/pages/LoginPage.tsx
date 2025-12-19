@@ -27,11 +27,17 @@ export const LoginPage: React.FC = () => {
           message: result.message,
         },
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Login error:', err);
-      console.error('Response:', err.response);
-      const errorMessage = err.response?.data?.message || err.message || 'Login failed. Please try again.';
-      setError(errorMessage);
+      // Type guard to safely access error properties
+      if (err instanceof Error) {
+        const axiosError = err as import('axios').AxiosError<{ message: string; errors?: Record<string, string[]> }>;
+        console.error('Response:', axiosError.response);
+        const errorMessage = axiosError.response?.data?.message || err.message || 'Login failed. Please try again.';
+        setError(errorMessage);
+      } else {
+        setError('Login failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

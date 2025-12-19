@@ -19,11 +19,14 @@ class Organization extends Model
         'email',
         'phone',
         'address',
+        'level',
+        'hierarchical_order',
         'is_active',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'hierarchical_order' => 'integer',
     ];
 
     /**
@@ -80,5 +83,79 @@ class Organization extends Model
     public function scopeCounties($query)
     {
         return $query->where('type', 'county');
+    }
+
+    /**
+     * Get the organizational level
+     */
+    public function getLevelAttribute(): string
+    {
+        return match ($this->type) {
+            'ministry' => 'national',
+            'department' => 'department',
+            'agency' => 'agency',
+            'county' => 'county',
+            default => 'other'
+        };
+    }
+
+    /**
+     * Check if organization is part of national government
+     */
+    public function isNational(): bool
+    {
+        return in_array($this->type, ['ministry', 'department', 'agency']);
+    }
+
+    /**
+     * Check if organization is a county
+     */
+    public function isCounty(): bool
+    {
+        return $this->type === 'county';
+    }
+
+    /**
+     * Get all users in this organization and its sub-organizations
+     */
+    public function getAllUsers()
+    {
+        $orgIds = [$this->id];
+        $children = $this->children;
+
+        foreach ($children as $child) {
+            $orgIds = array_merge($orgIds, $child->getAllChildrenIds());
+        }
+
+        return User::whereIn('organization_id', $orgIds)->get();
+    }
+
+    /**
+     * Get all child organization IDs recursively
+     */
+    public function getAllChildrenIds(): array
+    {
+        $ids = [$this->id];
+        foreach ($this->children as $child) {
+            $ids = array_merge($ids, $child->getAllChildrenIds());
+        }
+
+        return $ids;
+    }
+
+    /**
+     * Get the hierarchy path of the organization
+     */
+    public function getHierarchyPath(): string
+    {
+        $path = [];
+        $org = $this;
+
+        while ($org) {
+            array_unshift($path, $org->name);
+            $org = $org->parent;
+        }
+
+        return implode(' > ', $path);
     }
 }

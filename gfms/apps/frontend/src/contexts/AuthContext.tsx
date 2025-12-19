@@ -25,9 +25,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const token = localStorage.getItem('auth_token');
     if (token) {
       try {
-        const response = await apiClient.get<{ success: boolean; data: any }>('/auth/me');
+        const response = await apiClient.get<{ success: boolean; data: User }>('/auth/me');
         setUser(response.data);
-      } catch (error) {
+      } catch {
+        // Silently handle auth check errors and remove token
         localStorage.removeItem('auth_token');
       }
     }

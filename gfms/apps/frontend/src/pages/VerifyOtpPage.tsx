@@ -31,10 +31,16 @@ export const VerifyOtpPage: React.FC = () => {
     try {
       await verifyOtp(userId, values.code, otpChannel);
       navigate('/dashboard');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('OTP verification error:', err);
-      const errorMessage = err.response?.data?.message || err.message || 'Invalid OTP. Please try again.';
-      setError(errorMessage);
+      // Type guard to safely access error properties
+      if (err instanceof Error) {
+        const axiosError = err as import('axios').AxiosError<{ message: string; errors?: Record<string, string[]> }>;
+        const errorMessage = axiosError.response?.data?.message || err.message || 'Invalid OTP. Please try again.';
+        setError(errorMessage);
+      } else {
+        setError('Invalid OTP. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
