@@ -12,8 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Drop schema first to ensure a clean start for migrate:fresh
+        DB::statement('DROP SCHEMA IF EXISTS auth CASCADE');
+        
         // Create auth schema
-        DB::statement('CREATE SCHEMA IF NOT EXISTS auth');
+        DB::statement('CREATE SCHEMA auth');
         
         // Create organizations table in auth schema
         Schema::create('auth.organizations', function (Blueprint $table) {

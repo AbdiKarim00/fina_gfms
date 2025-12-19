@@ -23,7 +23,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'personal_number' => ['required', 'string', new ValidPersonalNumber, 'exists:users,personal_number'],
+            'personal_number' => ['required', 'string', new ValidPersonalNumber, 'exists:App\Models\User,personal_number'],
             'password' => ['required', 'string', 'min:8'],
             'otp_channel' => ['sometimes', 'string', 'in:email,sms'],
         ];
