@@ -20,6 +20,7 @@ return new class extends Migration
             $table->uuid('causer_id')->nullable();
             $table->string('causer_type')->nullable();
             $table->json('properties')->nullable();
+            $table->string('event')->nullable();
             $table->uuid('batch_uuid')->nullable();
             $table->timestamps();
             
