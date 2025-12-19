@@ -15,6 +15,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, HasRoles, LogsActivity, Notifiable, SoftDeletes;
 
+    protected $table = 'auth.users';
+
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = [
         'personal_number',
         'name',

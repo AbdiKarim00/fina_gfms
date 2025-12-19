@@ -53,9 +53,12 @@ class OrganizationSeeder extends Seeder
         ];
         
         foreach ($ministries as $ministryData) {
-            Organization::create(array_merge($ministryData, [
-                'id' => Str::uuid(),
-            ]));
+            Organization::updateOrCreate(
+                ['code' => $ministryData['code']],
+                array_merge($ministryData, [
+                    'id' => Organization::where('code', $ministryData['code'])->first()->id ?? Str::uuid(),
+                ])
+            );
         }
         
         // Create counties
@@ -96,9 +99,12 @@ class OrganizationSeeder extends Seeder
         ];
         
         foreach ($counties as $countyData) {
-            Organization::create(array_merge($countyData, [
-                'id' => Str::uuid(),
-            ]));
+            Organization::updateOrCreate(
+                ['code' => $countyData['code']],
+                array_merge($countyData, [
+                    'id' => Organization::where('code', $countyData['code'])->first()->id ?? Str::uuid(),
+                ])
+            );
         }
         
         $this->command->info('✓ Organizations seeded successfully!');

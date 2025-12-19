@@ -1,0 +1,142 @@
+
+   INFO  Seeding database.  
+
+  Database\Seeders\RolePermissionSeeder .............................. RUNNING  
+
+   Illuminate\Database\UniqueConstraintViolationException 
+
+  SQLSTATE[23505]: Unique violation: 7 ERROR:  duplicate key value violates unique constraint "permissions_permissions_name_guard_name_unique"
+DETAIL:  Key (name, guard_name)=(view_vehicles, web) already exists. (Connection: pgsql, SQL: insert into "permissions"."permissions" ("name", "guard_name", "created_at", "updated_at") values (view_vehicles, web, 2025-12-19 11:22:04, 2025-12-19 11:22:04))
+
+  at vendor/laravel/framework/src/Illuminate/Database/Connection.php:820
+    816▕         // message to include the bindings with SQL, which will make this exception a
+    817▕         // lot more helpful to the developer instead of just the database's errors.
+    818▕         catch (Exception $e) {
+    819▕             if ($this->isUniqueConstraintError($e)) {
+  ➜ 820▕                 throw new UniqueConstraintViolationException(
+    821▕                     $this->getName(), $query, $this->prepareBindings($bindings), $e
+    822▕                 );
+    823▕             }
+    824▕
+
+  1   vendor/laravel/framework/src/Illuminate/Database/Connection.php:571
+      PDOException::("SQLSTATE[23505]: Unique violation: 7 ERROR:  duplicate key value violates unique constraint "permissions_permissions_name_guard_name_unique"
+DETAIL:  Key (name, guard_name)=(view_vehicles, web) already exists.")
+
+  2   vendor/laravel/framework/src/Illuminate/Database/Connection.php:571
+      PDOStatement::execute()
+
+  3   vendor/laravel/framework/src/Illuminate/Database/Connection.php:812
+      Illuminate\Database\Connection::Illuminate\Database\{closure}("insert into "permissions"."permissions" ("name", "guard_name", "created_at", "updated_at") values (?, ?, ?, ?)")
+
+  4   vendor/laravel/framework/src/Illuminate/Database/Connection.php:779
+      Illuminate\Database\Connection::runQueryCallback("insert into "permissions"."permissions" ("name", "guard_name", "created_at", "updated_at") values (?, ?, ?, ?)", Object(Closure))
+
+  5   vendor/laravel/framework/src/Illuminate/Database/Connection.php:560
+      Illuminate\Database\Connection::run("insert into "permissions"."permissions" ("name", "guard_name", "created_at", "updated_at") values (?, ?, ?, ?)", Object(Closure))
+
+  6   vendor/laravel/framework/src/Illuminate/Database/Connection.php:524
+      Illuminate\Database\Connection::statement("insert into "permissions"."permissions" ("name", "guard_name", "created_at", "updated_at") values (?, ?, ?, ?)")
+
+  7   vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php:3717
+      Illuminate\Database\Connection::insert("insert into "permissions"."permissions" ("name", "guard_name", "created_at", "updated_at") values (?, ?, ?, ?)")
+
+  8   database/seeders/RolePermissionSeeder.php:98
+      Illuminate\Database\Query\Builder::insert()
+
+  9   vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:36
+      Database\Seeders\RolePermissionSeeder::run()
+
+  10  vendor/laravel/framework/src/Illuminate/Container/Util.php:43
+      Illuminate\Container\BoundMethod::Illuminate\Container\{closure}()
+
+  11  vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:95
+      Illuminate\Container\Util::unwrapIfClosure(Object(Closure))
+
+  12  vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:35
+      Illuminate\Container\BoundMethod::callBoundMethod(Object(Illuminate\Foundation\Application), Object(Closure))
+
+  13  vendor/laravel/framework/src/Illuminate/Container/Container.php:696
+      Illuminate\Container\BoundMethod::call(Object(Illuminate\Foundation\Application), [])
+
+  14  vendor/laravel/framework/src/Illuminate/Database/Seeder.php:188
+      Illuminate\Container\Container::call([])
+
+  15  vendor/laravel/framework/src/Illuminate/Database/Seeder.php:197
+      Illuminate\Database\Seeder::Illuminate\Database\{closure}()
+
+  16  vendor/laravel/framework/src/Illuminate/Database/Seeder.php:61
+      Illuminate\Database\Seeder::__invoke([])
+
+  17  database/seeders/DatabaseSeeder.php:15
+      Illuminate\Database\Seeder::call("Database\Seeders\RolePermissionSeeder")
+
+  18  vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:36
+      Database\Seeders\DatabaseSeeder::run()
+
+  19  vendor/laravel/framework/src/Illuminate/Container/Util.php:43
+      Illuminate\Container\BoundMethod::Illuminate\Container\{closure}()
+
+  20  vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:95
+      Illuminate\Container\Util::unwrapIfClosure(Object(Closure))
+
+  21  vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:35
+      Illuminate\Container\BoundMethod::callBoundMethod(Object(Illuminate\Foundation\Application), Object(Closure))
+
+  22  vendor/laravel/framework/src/Illuminate/Container/Container.php:696
+      Illuminate\Container\BoundMethod::call(Object(Illuminate\Foundation\Application), [])
+
+  23  vendor/laravel/framework/src/Illuminate/Database/Seeder.php:188
+      Illuminate\Container\Container::call([])
+
+  24  vendor/laravel/framework/src/Illuminate/Database/Seeder.php:197
+      Illuminate\Database\Seeder::Illuminate\Database\{closure}()
+
+  25  vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php:70
+      Illuminate\Database\Seeder::__invoke()
+
+  26  vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php:155
+      Illuminate\Database\Console\Seeds\SeedCommand::Illuminate\Database\Console\Seeds\{closure}()
+
+  27  vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php:69
+      Illuminate\Database\Eloquent\Model::unguarded(Object(Closure))
+
+  28  vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:36
+      Illuminate\Database\Console\Seeds\SeedCommand::handle()
+
+  29  vendor/laravel/framework/src/Illuminate/Container/Util.php:43
+      Illuminate\Container\BoundMethod::Illuminate\Container\{closure}()
+
+  30  vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:95
+      Illuminate\Container\Util::unwrapIfClosure(Object(Closure))
+
+  31  vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:35
+      Illuminate\Container\BoundMethod::callBoundMethod(Object(Illuminate\Foundation\Application), Object(Closure))
+
+  32  vendor/laravel/framework/src/Illuminate/Container/Container.php:696
+      Illuminate\Container\BoundMethod::call(Object(Illuminate\Foundation\Application), [])
+
+  33  vendor/laravel/framework/src/Illuminate/Console/Command.php:213
+      Illuminate\Container\Container::call()
+
+  34  vendor/symfony/console/Command/Command.php:335
+      Illuminate\Console\Command::execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Illuminate\Console\OutputStyle))
+
+  35  vendor/laravel/framework/src/Illuminate/Console/Command.php:182
+      Symfony\Component\Console\Command\Command::run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Illuminate\Console\OutputStyle))
+
+  36  vendor/symfony/console/Application.php:1103
+      Illuminate\Console\Command::run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+
+  37  vendor/symfony/console/Application.php:356
+      Symfony\Component\Console\Application::doRunCommand(Object(Illuminate\Database\Console\Seeds\SeedCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+
+  38  vendor/symfony/console/Application.php:195
+      Symfony\Component\Console\Application::doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+
+  39  vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php:198
+      Symfony\Component\Console\Application::run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+
+  40  artisan:52
+      Illuminate\Foundation\Console\Kernel::handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+

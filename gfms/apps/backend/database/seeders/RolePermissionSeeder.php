@@ -16,6 +16,13 @@ class RolePermissionSeeder extends Seeder
     {
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+
+        // Clear existing data to ensure clean seed
+        DB::table('permissions.role_has_permissions')->delete();
+        DB::table('permissions.model_has_roles')->delete();
+        DB::table('permissions.model_has_permissions')->delete();
+        DB::table('permissions.roles')->delete();
+        DB::table('permissions.permissions')->delete();
         
         // Define all permissions grouped by resource
         $permissions = [
@@ -414,8 +421,6 @@ class RolePermissionSeeder extends Seeder
                 DB::table('permissions.role_has_permissions')->insert([
                     'permission_id' => $permissionId,
                     'role_id' => $roleId,
-                    'created_at' => now(),
-                    'updated_at' => now(),
                 ]);
             }
         }

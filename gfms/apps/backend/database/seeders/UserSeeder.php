@@ -20,102 +20,108 @@ class UserSeeder extends Seeder
         $ministry = Organization::where('type', 'ministry')->first();
         $county = Organization::where('type', 'county')->first();
         
-        // Create super admin user
-        $superAdmin = User::create([
-            'id' => Str::uuid(),
-            'personal_number' => '100000',
-            'name' => 'Super Administrator',
-            'email' => 'superadmin@gfms.go.ke',
-            'phone' => '+254700000000',
-            'password' => Hash::make('password'),
-            'organization_id' => $ministry->id ?? null,
-            'job_group' => 'Administrative',
-            'position' => 'System Administrator',
-            'hierarchical_level' => 1,
-            'is_active' => true,
-            'email_verified_at' => now(),
-        ]);
-        
-        // Assign Super Admin role
-        $superAdmin->assignRole('Super Admin');
-        
-        // Create Cabinet Secretary user
-        $cabinetSecretary = User::create([
-            'id' => Str::uuid(),
-            'personal_number' => '100001',
-            'name' => 'Hon. Alice Wambui',
-            'email' => 'cabinet.secretary@gfms.go.ke',
-            'phone' => '+254700000001',
-            'password' => Hash::make('password'),
-            'organization_id' => $ministry->id ?? null,
-            'job_group' => 'Cabinet Secretary',
-            'position' => 'Cabinet Secretary',
-            'hierarchical_level' => 1,
-            'is_active' => true,
-            'email_verified_at' => now(),
-        ]);
-        
-        // Assign Cabinet Secretary role
-        $cabinetSecretary->assignRole('Cabinet Secretary');
-        
-        // Create Principal Secretary user
-        $principalSecretary = User::create([
-            'id' => Str::uuid(),
-            'personal_number' => '100002',
-            'name' => 'Dr. John Kamau',
-            'email' => 'principal.secretary@gfms.go.ke',
-            'phone' => '+254700000002',
-            'password' => Hash::make('password'),
-            'organization_id' => $ministry->id ?? null,
-            'job_group' => 'Principal Secretary',
-            'position' => 'Principal Secretary',
-            'hierarchical_level' => 2,
-            'is_active' => true,
-            'email_verified_at' => now(),
-        ]);
-        
-        // Assign Principal Secretary role
-        $principalSecretary->assignRole('Principal Secretary');
-        
-        // Create Fleet Manager user
-        $fleetManager = User::create([
-            'id' => Str::uuid(),
-            'personal_number' => '100003',
-            'name' => 'Peter Mwangi',
-            'email' => 'fleet.manager@gfms.go.ke',
-            'phone' => '+254700000003',
-            'password' => Hash::make('password'),
-            'organization_id' => $county->id ?? null,
-            'job_group' => 'Fleet Management',
-            'position' => 'Fleet Manager',
-            'hierarchical_level' => 3,
-            'is_active' => true,
-            'email_verified_at' => now(),
-        ]);
-        
-        // Assign Fleet Manager role
-        $fleetManager->assignRole('Fleet Manager');
-        
-        // Create Driver user
-        $driver = User::create([
-            'id' => Str::uuid(),
-            'personal_number' => '100004',
-            'name' => 'David Ochieng',
-            'email' => 'driver@gfms.go.ke',
-            'phone' => '+254700000004',
-            'password' => Hash::make('password'),
-            'organization_id' => $county->id ?? null,
-            'job_group' => 'Driver',
-            'position' => 'Authorized Driver',
-            'hierarchical_level' => 4,
-            'is_active' => true,
-            'email_verified_at' => now(),
-        ]);
-        
-        // Assign Driver role
-        $driver->assignRole('Authorized Driver');
+        if (!$ministry || !$county) {
+            $this->command->error('Ministry or County organization not found. Please run OrganizationSeeder first.');
+            return;
+        }
+
+        // Define users to seed
+        $users = [
+            [
+                'personal_number' => '100000',
+                'name' => 'Super Administrator',
+                'email' => 'superadmin@gfms.go.ke',
+                'phone' => '+254700000000',
+                'password' => Hash::make('password'),
+                'organization_id' => $ministry->id,
+                'job_group' => 'Administrative',
+                'position' => 'System Administrator',
+                'hierarchical_level' => 1,
+                'is_active' => true,
+                'email_verified_at' => now(),
+                'role' => 'Super Admin',
+            ],
+            [
+                'personal_number' => '100001',
+                'name' => 'Hon. Alice Wambui',
+                'email' => 'cabinet.secretary@gfms.go.ke',
+                'phone' => '+254700000001',
+                'password' => Hash::make('password'),
+                'organization_id' => $ministry->id,
+                'job_group' => 'Cabinet Secretary',
+                'position' => 'Cabinet Secretary',
+                'hierarchical_level' => 1,
+                'is_active' => true,
+                'email_verified_at' => now(),
+                'role' => 'Cabinet Secretary',
+            ],
+            [
+                'personal_number' => '100002',
+                'name' => 'Dr. John Kamau',
+                'email' => 'principal.secretary@gfms.go.ke',
+                'phone' => '+254700000002',
+                'password' => Hash::make('password'),
+                'organization_id' => $ministry->id,
+                'job_group' => 'Principal Secretary',
+                'position' => 'Principal Secretary',
+                'hierarchical_level' => 2,
+                'is_active' => true,
+                'email_verified_at' => now(),
+                'role' => 'Principal Secretary',
+            ],
+            [
+                'personal_number' => '100003',
+                'name' => 'Peter Mwangi',
+                'email' => 'fleet.manager@gfms.go.ke',
+                'phone' => '+254700000003',
+                'password' => Hash::make('password'),
+                'organization_id' => $county->id,
+                'job_group' => 'Fleet Management',
+                'position' => 'Fleet Manager',
+                'hierarchical_level' => 3,
+                'is_active' => true,
+                'email_verified_at' => now(),
+                'role' => 'Fleet Manager',
+            ],
+            [
+                'personal_number' => '100004',
+                'name' => 'David Ochieng',
+                'email' => 'driver@gfms.go.ke',
+                'phone' => '+254700000004',
+                'password' => Hash::make('password'),
+                'organization_id' => $county->id,
+                'job_group' => 'Driver',
+                'position' => 'Authorized Driver',
+                'hierarchical_level' => 4,
+                'is_active' => true,
+                'email_verified_at' => now(),
+                'role' => 'Authorized Driver',
+            ],
+        ];
+
+        foreach ($users as $userData) {
+            $role = $userData['role'];
+            unset($userData['role']);
+
+            // Find existing user by personal_number to keep its UUID if it exists
+            $existingUser = User::where('personal_number', $userData['personal_number'])->first();
+            $userId = $existingUser ? $existingUser->id : (string) Str::uuid();
+
+            $user = User::updateOrCreate(
+                ['personal_number' => $userData['personal_number']],
+                array_merge($userData, ['id' => $userId])
+            );
+
+            // Sync roles - clear existing and assign new
+            DB::table('permissions.model_has_roles')
+                ->where('model_id', $user->id)
+                ->where('model_type', User::class)
+                ->delete();
+                
+            $user->assignRole($role);
+        }
         
         $this->command->info('✓ Users seeded successfully!');
-        $this->command->info('  - 5 users created (Super Admin, Cabinet Secretary, Principal Secretary, Fleet Manager, Driver)');
+        $this->command->info('  - ' . count($users) . ' users created and roles assigned');
     }
 }

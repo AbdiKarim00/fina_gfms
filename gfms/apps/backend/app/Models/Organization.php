@@ -11,6 +11,11 @@ class Organization extends Model
 {
     use HasFactory;
 
+    protected $table = 'auth.organizations';
+
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = [
         'name',
         'code',
