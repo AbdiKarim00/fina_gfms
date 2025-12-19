@@ -97,60 +97,60 @@ export const LoginPage: React.FC = () => {
               <Form.Item
                 label="Personal Number"
                 name="personal_number"
-                rules={[
-                  { required: true, message: 'Please enter your personal number' },
-                  { pattern: /^\d+$/, message: 'Personal number must contain only digits' }
-                ]}
+                  rules={[
+                    { required: true, message: 'Please enter your personal number' },
+                    { pattern: /^[a-zA-Z0-9]+$/, message: 'Personal number must contain only letters and digits' }
+                  ]}
               >
-                <Input
-                  prefix={<UserOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
-                  placeholder="123456"
-                  autoComplete="username"
-                />
-              </Form.Item>
-
-              <Form.Item
-                label="Password"
-                name="password"
-                rules={[
-                  { required: true, message: 'Please enter your password' },
-                  { min: 8, message: 'Password must be at least 8 characters' }
-                ]}
-              >
-                <Input.Password
-                  prefix={<LockOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
-                  placeholder="••••••••"
-                  autoComplete="current-password"
-                />
-              </Form.Item>
-
-              <Form.Item style={{ marginBottom: 0 }}>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  loading={loading}
-                  block
-                  size="large"
-                  style={{ height: 48, fontWeight: 600 }}
+                  <Input
+                    prefix={<UserOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
+                    placeholder="CS001"
+                    autoComplete="username"
+                  />
+                </Form.Item>
+  
+                <Form.Item
+                  label="Password"
+                  name="password"
+                  rules={[
+                    { required: true, message: 'Please enter your password' },
+                    { min: 8, message: 'Password must be at least 8 characters' }
+                  ]}
                 >
-                  {loading ? 'Signing in...' : 'Sign in'}
-                </Button>
-              </Form.Item>
-            </Form>
-
-            {/* Demo Credentials */}
-            <Alert
-              message={
-                <Space size="small">
-                  <Text strong>Demo:</Text>
-                  <Text code>123456</Text>
-                  <Text type="secondary">/</Text>
-                  <Text code>password</Text>
-                </Space>
-              }
-              type="info"
-              showIcon
-            />
+                  <Input.Password
+                    prefix={<LockOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
+                    placeholder="••••••••"
+                    autoComplete="current-password"
+                  />
+                </Form.Item>
+  
+                <Form.Item style={{ marginBottom: 0 }}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    loading={loading}
+                    block
+                    size="large"
+                    style={{ height: 48, fontWeight: 600 }}
+                  >
+                    {loading ? 'Signing in...' : 'Sign in'}
+                  </Button>
+                </Form.Item>
+              </Form>
+  
+              {/* Demo Credentials */}
+              <Alert
+                message={
+                  <Space size="small">
+                    <Text strong>Demo:</Text>
+                    <Text code>CS001</Text>
+                    <Text type="secondary">/</Text>
+                    <Text code>password</Text>
+                  </Space>
+                }
+                type="info"
+                showIcon
+              />
           </Space>
         </Card>
 
